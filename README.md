@@ -8,7 +8,11 @@
 [![Total Downloads][ico-downloads]][link-downloads]
 -->
 
-Declaration of dependencies shared by all PoP components
+Declaration of dependencies shared by all PoP components:
+
+**Symfony's DependencyInjection Component**
+
+Symfony's [DependencyInjection Component](https://symfony.com/doc/current/components/dependency_injection.html) is used to provide services. `ContainerBuilderFactory` hosts an instance of `ContainerBuilder` which can be used by any component to register and implement the services.
 
 ## Install
 
