@@ -5,9 +5,9 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use PoP\Root\Container\ContainerBuilderFactory;
 
-trait ConfigurableServicesTrait
+trait YAMLConfigurableServicesTrait
 {
-    public static function initServiceConfiguration(string $componentDir)
+    public static function initYAMLServiceConfiguration(string $componentDir)
     {
         // Initialize the ContainerBuilder with this component's service implementations
         $containerBuilder = ContainerBuilderFactory::getInstance();
