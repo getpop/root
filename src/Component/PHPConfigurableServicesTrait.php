@@ -12,6 +12,6 @@ trait PHPConfigurableServicesTrait
         // Initialize the ContainerBuilder with this component's service implementations
         $containerBuilder = ContainerBuilderFactory::getInstance();
         $loader = new PhpFileLoader($containerBuilder, new FileLocator($componentDir));
-        $loader->load('config/services.php');
+        $loader->load('config/service-configuration.php');
     }
 }
