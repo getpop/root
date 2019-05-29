@@ -27,4 +27,15 @@ class Component extends AbstractComponent
         // Initialize the ContainerBuilder
         ContainerBuilderFactory::init(dirname(__DIR__));
     }
+    
+    /**
+     * Function called by the Bootloader after all components have been loaded
+     *
+     * @return void
+     */
+    public static function boot()
+    {
+        // Compile and Cache Symfony's DependencyInjection Container Builder
+        ContainerBuilderFactory::maybeCompileAndCacheContainer();
+    }
 }
