@@ -1,6 +1,7 @@
 <?php
 namespace PoP\Root\Container;
 
+use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
 
@@ -12,14 +13,17 @@ class ContainerBuilderFactory {
     {
         self::$cacheFile = $componentDir.'/build/cache/container.php';
 
-        // $file = \PoP\Root\Component::DIR.'/build/cache/container.php';
         // Initialize the services from the cached file
-        self::$cached = file_exists(self::$cacheFile);
-        if (self::$cached) {
+        $isDebug = true;
+        $containerConfigCache = new ConfigCache(self::$cacheFile, $isDebug);
+        self::$cached = $containerConfigCache->isFresh();
+
+        // If not cached, then create the new instance
+        if (!self::$cached) {
+            self::$instance = new ContainerBuilder();
+        } else {
             require_once self::$cacheFile;
             self::$instance = new \ProjectServiceContainer();
-        } else {
-            self::$instance = new ContainerBuilder();
         }
     }
     public static function getInstance()
@@ -39,7 +43,10 @@ class ContainerBuilderFactory {
             $containerBuilder = self::getInstance();            // ...
             $containerBuilder->compile();
             $dumper = new PhpDumper($containerBuilder);
-            @mkdir(dirname(self::$cacheFile), 0777, true);
+            $dir = dirname(self::$cacheFile);
+            if (!file_exists($dir)) {
+                @mkdir($dir, 0777, true);
+            }
             file_put_contents(self::$cacheFile, $dumper->dump());
         }
     }
