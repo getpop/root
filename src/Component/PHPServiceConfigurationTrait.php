@@ -5,6 +5,11 @@ use PoP\Root\Container\ContainerBuilderFactory;
 
 trait PHPServiceConfigurationTrait
 {
+    public static function init()
+    {
+        self::initPHPServiceConfiguration();
+    }
+
     public static function initPHPServiceConfiguration()
     {
         // First check if the container has been cached. If so, do nothing
@@ -18,7 +23,7 @@ trait PHPServiceConfigurationTrait
      *
      * @return void
      */
-    public static function configure()
+    protected static function configure()
     {
 
     }
