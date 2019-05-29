@@ -12,7 +12,7 @@ abstract class AbstractComponent
     public static function init()
     {
         // Register itself in the Manager
-        ComponentManager::register(self::class);
+        ComponentManager::register(get_called_class());
     }
 
     /**
@@ -22,6 +22,5 @@ abstract class AbstractComponent
      */
     public static function boot()
     {
-
     }
 }
