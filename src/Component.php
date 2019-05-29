@@ -25,6 +25,6 @@ class Component extends AbstractComponent
         self::$active = true;
 
         // Initialize the ContainerBuilder
-        ContainerBuilderFactory::init();
+        ContainerBuilderFactory::init(dirname(__DIR__));
     }
 }
