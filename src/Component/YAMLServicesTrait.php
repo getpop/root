@@ -13,5 +13,6 @@ trait YAMLServicesTrait
         $containerBuilder = ContainerBuilderFactory::getInstance();
         $loader = new YamlFileLoader($containerBuilder, new FileLocator($componentDir));
         $loader->load('config/services.yaml');
+        // $containerBuilder->compile();
     }
 }

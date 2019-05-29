@@ -1,12 +1,13 @@
 <?php
 namespace PoP\Root;
 
+use PoP\Root\Component\AbstractComponent;
 use PoP\Root\Container\ContainerBuilderFactory;
 
 /**
  * Class required to check if this component exists and is active
  */
-class Component
+class Component extends AbstractComponent
 {
     /**
      * Indicate if the component is active
@@ -20,6 +21,7 @@ class Component
      */
     public static function init()
     {
+        parent::init();
         self::$active = true;
 
         // Initialize the ContainerBuilder
