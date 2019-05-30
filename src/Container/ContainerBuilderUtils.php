@@ -2,6 +2,7 @@
 namespace PoP\Root\Container;
 
 use PoP\Root\Container\ContainerBuilderFactory;
+use Symfony\Component\DependencyInjection\Reference;
 
 class ContainerBuilderUtils {
     
@@ -41,6 +42,28 @@ class ContainerBuilderUtils {
 
         foreach (self::getNamespaceServiceIds($namespace) as $serviceId) {
             $containerBuilder->get($serviceId);
+        }
+    }
+
+    /**
+     * Inject services into another service
+     *
+     * @param string $injectableServiceId
+     * @param string $injectingServicesNamespace
+     * @param string $methodCall
+     * @return void
+     */
+    public static function injectServicesIntoService(
+        string $injectableServiceId, 
+        string $injectingServicesNamespace,
+        string $methodCall
+    ): void
+    {
+        $containerBuilder = ContainerBuilderFactory::getInstance();
+        $definition = $containerBuilder->getDefinition($injectableServiceId);
+        $injectingServiceIds = self::getNamespaceServiceIds($injectingServicesNamespace);
+        foreach ($injectingServiceIds as $injectingServiceId) {
+            $definition->addMethodCall($methodCall, [new Reference($injectingServiceId)]);
         }
     }
 }
