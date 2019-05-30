@@ -46,7 +46,7 @@ class ContainerBuilderUtils {
     }
 
     /**
-     * Inject services into another service
+     * Inject all services located under a given namespace into another service
      *
      * @param string $injectableServiceId
      * @param string $injectingServicesNamespace
