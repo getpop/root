@@ -1,5 +1,5 @@
 <?php
-namespace PoP\Root\Component;
+namespace PoP\Root\Managers;
 
 /**
  * Keep a reference to all Components
