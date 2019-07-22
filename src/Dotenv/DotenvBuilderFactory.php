@@ -12,10 +12,7 @@ class DotenvBuilderFactory {
      */
     public static function init()
     {
-        $defaultFileLocation = $_SERVER['DOCUMENT_ROOT'].'/config';
-        if (file_exists($defaultFileLocation)) {
-            self::setFileLocation($defaultFileLocation);
-        }
+        self::setFileLocation($_SERVER['DOCUMENT_ROOT'].'/config');
     }
     /**
      * Override the folder from where to get the .env files
@@ -30,7 +27,7 @@ class DotenvBuilderFactory {
     public static function maybeLoadEnvironmentVariables(): void
     {
         // If the file location has been set, then load the environment variables from .env files stored there
-        if (self::$fileLocation) {
+        if (self::$fileLocation && file_exists(self::$fileLocation.'/.env')) {
             $dotenv = new Dotenv();
             $dotenv->loadEnv(self::$fileLocation.'/.env');
         }
