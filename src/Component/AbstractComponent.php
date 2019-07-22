@@ -3,7 +3,7 @@ namespace PoP\Root\Component;
 
 use PoP\Root\Managers\ComponentManager;
 /**
- * Class required to check if this component exists and is active
+ * Initialize component
  */
 abstract class AbstractComponent
 {
