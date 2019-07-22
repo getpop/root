@@ -2,6 +2,7 @@
 namespace PoP\Root;
 
 use PoP\Root\Component\AbstractComponent;
+use PoP\Root\Dotenv\DotenvBuilderFactory;
 use PoP\Root\Container\ContainerBuilderFactory;
 
 /**
@@ -29,5 +30,8 @@ class Component extends AbstractComponent
     {
         // Compile and Cache Symfony's DependencyInjection Container Builder
         ContainerBuilderFactory::maybeCompileAndCacheContainer();
+
+        // Load variables from the environment
+        DotenvBuilderFactory::maybeLoadEnvironmentVariables();
     }
 }
