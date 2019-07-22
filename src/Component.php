@@ -19,6 +19,9 @@ class Component extends AbstractComponent
 
         // Initialize the ContainerBuilder
         ContainerBuilderFactory::init(dirname(__DIR__));
+
+        // Initialize Dotenv
+        DotenvBuilderFactory::init();
     }
     
     /**
