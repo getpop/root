@@ -1,6 +1,7 @@
 <?php
 namespace PoP\Root\Container;
 
+use PoP\Root\Component\Configuration;
 use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
@@ -14,8 +15,7 @@ class ContainerBuilderFactory {
         self::$cacheFile = $componentDir.'/build/cache/container.php';
 
         // Initialize the services from the cached file
-        $isDebug = isset($_ENV['IS_CONFIG_CACHE_DEBUG']) && ($_ENV['IS_CONFIG_CACHE_DEBUG'] == "true");
-        $containerConfigCache = new ConfigCache(self::$cacheFile, $isDebug);
+        $containerConfigCache = new ConfigCache(self::$cacheFile, Configuration::isConfigCacheDebug());
         self::$cached = $containerConfigCache->isFresh();
 
         // If not cached, then create the new instance
