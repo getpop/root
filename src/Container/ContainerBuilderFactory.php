@@ -48,6 +48,9 @@ class ContainerBuilderFactory {
                 @mkdir($dir, 0777, true);
             }
             file_put_contents(self::$cacheFile, $dumper->dump());
+
+            // Change the permissions so it can be modified by external processes (eg: deployment)
+            chmod(self::$cacheFile, 0777);
         }
     }
 }
