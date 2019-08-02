@@ -12,7 +12,10 @@ class DotenvBuilderFactory {
     public static function init()
     {
         // Set the folder where to find .env files through an environment constant. If not set, use "/config" in the root directory
-        $envConfigFolder = isset($_ENV['ENV_CONFIG_FOLDER']) ? $_ENV['ENV_CONFIG_FOLDER'] : $_SERVER['DOCUMENT_ROOT'].'/config';
+        $envConfigFolder = getenv('ENV_CONFIG_FOLDER');
+        if (!$envConfigFolder) {
+            $envConfigFolder = $_SERVER['DOCUMENT_ROOT'].'/config';
+        }
 
         // If the file location has been set, then load the environment variables from .env files stored there
         if (file_exists($envConfigFolder.'/.env')) {
