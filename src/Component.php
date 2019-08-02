@@ -17,13 +17,13 @@ class Component extends AbstractComponent
     {
         parent::init();
 
+        // Initialize Dotenv (before the ContainerBuilder, since this one uses environment constants)
+        DotenvBuilderFactory::init();
+
         // Initialize the ContainerBuilder
         ContainerBuilderFactory::init(dirname(__DIR__));
-
-        // Initialize Dotenv
-        DotenvBuilderFactory::init();
     }
-    
+
     /**
      * Function called by the Bootloader after all components have been loaded
      *
@@ -33,8 +33,5 @@ class Component extends AbstractComponent
     {
         // Compile and Cache Symfony's DependencyInjection Container Builder
         ContainerBuilderFactory::maybeCompileAndCacheContainer();
-
-        // Load variables from the environment
-        DotenvBuilderFactory::maybeLoadEnvironmentVariables();
     }
 }
