@@ -13,7 +13,7 @@ class Configuration
     public static function isConfigCacheDebug()
     {
         if (is_null(self::$configCacheDebug)) {
-            self::$configCacheDebug = $_ENV['IS_CONFIG_CACHE_DEBUG'] == "true";
+            self::$configCacheDebug = isset($_ENV['IS_CONFIG_CACHE_DEBUG']) && strtolower($_ENV['IS_CONFIG_CACHE_DEBUG']) === "true";
         }
         return self::$configCacheDebug;
     }
