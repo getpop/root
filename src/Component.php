@@ -10,7 +10,7 @@ use PoP\Root\Container\ContainerBuilderFactory;
  */
 class Component extends AbstractComponent
 {
-    const VERSION = '0.1.0';
+    // const VERSION = '0.1.0';
     /**
      * Initialize services
      */
