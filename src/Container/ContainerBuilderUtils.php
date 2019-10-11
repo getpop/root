@@ -5,14 +5,19 @@ use PoP\Root\Container\ContainerBuilderFactory;
 use Symfony\Component\DependencyInjection\Reference;
 
 class ContainerBuilderUtils {
-    
+
     /**
      * Get all services located under the specified namespace
+     * It requires the classes to be exposed as services in file services.yaml, using their own class as the service ID, like this:
+     *
+     * PoP\ComponentModel\FieldValueResolvers\:
+     *     resource: '../src/FieldValueResolvers/*'
+     *     public: true
      *
      * @param string $namespace
      * @return array list of services ids defined in the container
      */
-    public static function getNamespaceServiceIds(string $namespace): array
+    public static function getServiceClassesUnderNamespace(string $namespace): array
     {
         $containerBuilder = ContainerBuilderFactory::getInstance();
 
@@ -40,8 +45,8 @@ class ContainerBuilderUtils {
     {
         $containerBuilder = ContainerBuilderFactory::getInstance();
 
-        foreach (self::getNamespaceServiceIds($namespace) as $serviceId) {
-            $containerBuilder->get($serviceId);
+        foreach (self::getServiceClassesUnderNamespace($namespace) as $serviceClass) {
+            $containerBuilder->get($serviceClass);
         }
     }
 
@@ -54,16 +59,16 @@ class ContainerBuilderUtils {
      * @return void
      */
     public static function injectServicesIntoService(
-        string $injectableServiceId, 
+        string $injectableServiceId,
         string $injectingServicesNamespace,
         string $methodCall
     ): void
     {
         $containerBuilder = ContainerBuilderFactory::getInstance();
         $definition = $containerBuilder->getDefinition($injectableServiceId);
-        $injectingServiceIds = self::getNamespaceServiceIds($injectingServicesNamespace);
-        foreach ($injectingServiceIds as $injectingServiceId) {
-            $definition->addMethodCall($methodCall, [new Reference($injectingServiceId)]);
+        $injectingServiceClasses = self::getServiceClassesUnderNamespace($injectingServicesNamespace);
+        foreach ($injectingServiceClasses as $injectingServiceClassId) {
+            $definition->addMethodCall($methodCall, [new Reference($injectingServiceClassId)]);
         }
     }
 }
