@@ -44,7 +44,6 @@ class ContainerBuilderUtils {
     public static function instantiateNamespaceServices(string $namespace): void
     {
         $containerBuilder = ContainerBuilderFactory::getInstance();
-
         foreach (self::getServiceClassesUnderNamespace($namespace) as $serviceClass) {
             $containerBuilder->get($serviceClass);
         }
