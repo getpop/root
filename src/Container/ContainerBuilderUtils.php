@@ -109,7 +109,8 @@ class ContainerBuilderUtils {
             function($value) {
                 if ($value && is_string($value) && substr($value, 0, 1) == '@') {
                     // Return a reference to the service
-                    return new Reference($value);
+                    $injectedServiceId = substr($value, 1);
+                    return new Reference($injectedServiceId);
                 }
                 return $value;
             },
