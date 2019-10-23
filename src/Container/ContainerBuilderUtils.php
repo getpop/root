@@ -72,7 +72,7 @@ class ContainerBuilderUtils {
     }
 
     /**
-     * Inject some services located into another service
+     * Inject some service into another service
      *
      * @param string $injectableServiceId
      * @param string $injectingServiceId
@@ -88,5 +88,24 @@ class ContainerBuilderUtils {
         $containerBuilder = ContainerBuilderFactory::getInstance();
         $definition = $containerBuilder->getDefinition($injectableServiceId);
         $definition->addMethodCall($methodCall, [new Reference($injectingServiceId)]);
+    }
+
+    /**
+     * Inject some value into a service
+     *
+     * @param string $injectableServiceId
+     * @param string $value
+     * @param string $methodCall
+     * @return void
+     */
+    public static function injectValueIntoService(
+        string $injectableServiceId,
+        string $methodCall,
+        $value
+    ): void
+    {
+        $containerBuilder = ContainerBuilderFactory::getInstance();
+        $definition = $containerBuilder->getDefinition($injectableServiceId);
+        $definition->addMethodCall($methodCall, $value);
     }
 }
