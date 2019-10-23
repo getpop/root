@@ -98,14 +98,25 @@ class ContainerBuilderUtils {
      * @param string $methodCall
      * @return void
      */
-    public static function injectValueIntoService(
+    public static function injectValuesIntoService(
         string $injectableServiceId,
         string $methodCall,
-        $value
+        ...$values
     ): void
     {
+        // If any value is a string starting with '@', then it's a reference to a service!
+        $values = array_map(
+            function($value) {
+                if ($value && is_string($value) && substr($value, 0, 1) == '@') {
+                    // Return a reference to the service
+                    return new Reference($value);
+                }
+                return $value;
+            },
+            $values
+        );
         $containerBuilder = ContainerBuilderFactory::getInstance();
         $definition = $containerBuilder->getDefinition($injectableServiceId);
-        $definition->addMethodCall($methodCall, $value);
+        $definition->addMethodCall($methodCall, $values);
     }
 }
