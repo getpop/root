@@ -70,4 +70,23 @@ class ContainerBuilderUtils {
             $definition->addMethodCall($methodCall, [new Reference($injectingServiceClassId)]);
         }
     }
+
+    /**
+     * Inject some services located into another service
+     *
+     * @param string $injectableServiceId
+     * @param string $injectingServiceId
+     * @param string $methodCall
+     * @return void
+     */
+    public static function injectServiceIntoService(
+        string $injectableServiceId,
+        string $injectingServiceId,
+        string $methodCall
+    ): void
+    {
+        $containerBuilder = ContainerBuilderFactory::getInstance();
+        $definition = $containerBuilder->getDefinition($injectableServiceId);
+        $definition->addMethodCall($methodCall, [new Reference($injectingServiceId)]);
+    }
 }
