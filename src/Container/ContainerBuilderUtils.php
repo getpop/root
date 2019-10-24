@@ -36,6 +36,18 @@ class ContainerBuilderUtils {
     }
 
     /**
+     * Initialize a specific class
+     *
+     * @param string $namespace
+     * @return void
+     */
+    public static function instantiateService(string $serviceClass): void
+    {
+        $containerBuilder = ContainerBuilderFactory::getInstance();
+        $containerBuilder->get($serviceClass);
+    }
+
+    /**
      * Initialize all services located under the specified namespace
      *
      * @param string $namespace
