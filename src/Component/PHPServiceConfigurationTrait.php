@@ -25,6 +25,5 @@ trait PHPServiceConfigurationTrait
      */
     protected static function configure()
     {
-
     }
 }
