@@ -62,10 +62,10 @@ class ContainerBuilderUtils {
      * @param string $namespace
      * @return void
      */
-    public static function instantiateNamespaceServices(string $namespace): void
+    public static function instantiateNamespaceServices(string $namespace, bool $includeSubfolders = true): void
     {
         $containerBuilder = ContainerBuilderFactory::getInstance();
-        foreach (self::getServiceClassesUnderNamespace($namespace) as $serviceClass) {
+        foreach (self::getServiceClassesUnderNamespace($namespace, $includeSubfolders) as $serviceClass) {
             $containerBuilder->get($serviceClass);
         }
     }
@@ -81,12 +81,13 @@ class ContainerBuilderUtils {
     public static function injectServicesIntoService(
         string $injectableServiceId,
         string $injectingServicesNamespace,
-        string $methodCall
+        string $methodCall,
+        bool $includeSubfolders = true
     ): void
     {
         $containerBuilder = ContainerBuilderFactory::getInstance();
         $definition = $containerBuilder->getDefinition($injectableServiceId);
-        $injectingServiceClasses = self::getServiceClassesUnderNamespace($injectingServicesNamespace);
+        $injectingServiceClasses = self::getServiceClassesUnderNamespace($injectingServicesNamespace, $includeSubfolders);
         foreach ($injectingServiceClasses as $injectingServiceClassId) {
             $definition->addMethodCall($methodCall, [new Reference($injectingServiceClassId)]);
         }
