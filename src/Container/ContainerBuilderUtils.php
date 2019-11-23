@@ -15,9 +15,10 @@ class ContainerBuilderUtils {
      *     public: true
      *
      * @param string $namespace
+     * @param bool $includeSubfolders indicate if not include the classes from the subnamespaces
      * @return array list of services ids defined in the container
      */
-    public static function getServiceClassesUnderNamespace(string $namespace): array
+    public static function getServiceClassesUnderNamespace(string $namespace, bool $includeSubfolders = true): array
     {
         $containerBuilder = ContainerBuilderFactory::getInstance();
 
@@ -29,8 +30,16 @@ class ContainerBuilderUtils {
         // Obtain all services whose definition id start with the given namespace
         return array_filter(
             $containerBuilder->getServiceIds(),
-            function($class) use($namespace) {
-                return strpos($class, $namespace) === 0;
+            function($class) use($namespace, $includeSubfolders) {
+                return
+                    // id starts with namespace, and...
+                    strpos($class, $namespace) === 0 &&
+                    (
+                        // include subfolders, or...
+                        $includeSubfolders ||
+                        // exclude classes which still have another "\"
+                        strpos($class, '\\', strlen($namespace)) === false
+                    );
             }
         );
     }
