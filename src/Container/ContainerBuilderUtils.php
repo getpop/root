@@ -10,8 +10,8 @@ class ContainerBuilderUtils {
      * Get all services located under the specified namespace
      * It requires the classes to be exposed as services in file services.yaml, using their own class as the service ID, like this:
      *
-     * PoP\ComponentModel\FieldValueResolvers\:
-     *     resource: '../src/FieldValueResolvers/*'
+     * PoP\ComponentModel\FieldResolvers\:
+     *     resource: '../src/FieldResolvers/*'
      *     public: true
      *
      * @param string $namespace
