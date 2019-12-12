@@ -14,7 +14,7 @@ class Configuration
     {
         if (is_null(self::$configCacheDebug)) {
             $debugEnvValue = getenv('IS_CONFIG_CACHE_DEBUG');
-            self::$configCacheDebug = $debugEnvValue && strtolower($debugEnvValue) === "true";
+            self::$configCacheDebug = $debugEnvValue && strtolower($debugEnvValue) == "true";
         }
         return self::$configCacheDebug;
     }
