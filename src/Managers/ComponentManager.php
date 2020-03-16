@@ -21,10 +21,10 @@ class ComponentManager
      *
      * @return void
      */
-    public static function boot()
+    public static function prematureBoot()
     {
         foreach (self::$components as $component) {
-            $component::boot();
+            $component::prematureBoot();
         }
     }
 
@@ -33,10 +33,10 @@ class ComponentManager
      *
      * @return void
      */
-    public static function earlyBoot()
+    public static function timelyBoot()
     {
         foreach (self::$components as $component) {
-            $component::earlyBoot();
+            $component::timelyBoot();
         }
     }
 
@@ -45,10 +45,10 @@ class ComponentManager
      *
      * @return void
      */
-    public static function reallyBoot()
+    public static function lateBoot()
     {
         foreach (self::$components as $component) {
-            $component::reallyBoot();
+            $component::lateBoot();
         }
     }
 }

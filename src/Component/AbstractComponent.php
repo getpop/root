@@ -21,7 +21,7 @@ abstract class AbstractComponent
      *
      * @return void
      */
-    public static function boot()
+    public static function prematureBoot()
     {
     }
 
@@ -30,7 +30,7 @@ abstract class AbstractComponent
      *
      * @return void
      */
-    public static function earlyBoot()
+    public static function timelyBoot()
     {
     }
 
@@ -39,7 +39,7 @@ abstract class AbstractComponent
      *
      * @return void
      */
-    public static function reallyBoot()
+    public static function lateBoot()
     {
     }
 }
