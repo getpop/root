@@ -30,7 +30,7 @@ class Component extends AbstractComponent
      *
      * @return void
      */
-    public static function prematureBoot()
+    public static function beforeBoot()
     {
         // Compile and Cache Symfony's DependencyInjection Container Builder
         ContainerBuilderFactory::maybeCompileAndCacheContainer();
