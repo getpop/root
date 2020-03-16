@@ -24,4 +24,22 @@ abstract class AbstractComponent
     public static function boot()
     {
     }
+
+    /**
+     * Function called by the Bootloader when booting the system
+     *
+     * @return void
+     */
+    public static function earlyBoot()
+    {
+    }
+
+    /**
+     * Function called by the Bootloader when booting the system
+     *
+     * @return void
+     */
+    public static function reallyBoot()
+    {
+    }
 }

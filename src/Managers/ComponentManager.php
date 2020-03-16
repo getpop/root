@@ -27,4 +27,28 @@ class ComponentManager
             $component::boot();
         }
     }
+
+    /**
+     * Boot all components
+     *
+     * @return void
+     */
+    public static function earlyBoot()
+    {
+        foreach (self::$components as $component) {
+            $component::earlyBoot();
+        }
+    }
+
+    /**
+     * Boot all components
+     *
+     * @return void
+     */
+    public static function reallyBoot()
+    {
+        foreach (self::$components as $component) {
+            $component::reallyBoot();
+        }
+    }
 }
