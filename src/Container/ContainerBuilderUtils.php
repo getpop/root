@@ -4,8 +4,8 @@ namespace PoP\Root\Container;
 use PoP\Root\Container\ContainerBuilderFactory;
 use Symfony\Component\DependencyInjection\Reference;
 
-class ContainerBuilderUtils {
-
+class ContainerBuilderUtils
+{
     /**
      * Get all services located under the specified namespace
      * It requires the classes to be exposed as services in file services.yaml, using their own class as the service ID, like this:
@@ -30,7 +30,7 @@ class ContainerBuilderUtils {
         // Obtain all services whose definition id start with the given namespace
         return array_filter(
             $containerBuilder->getServiceIds(),
-            function($class) use($namespace, $includeSubfolders) {
+            function ($class) use ($namespace, $includeSubfolders) {
                 return
                     // id starts with namespace, and...
                     strpos($class, $namespace) === 0 &&
@@ -83,8 +83,7 @@ class ContainerBuilderUtils {
         string $injectingServicesNamespace,
         string $methodCall,
         bool $includeSubfolders = true
-    ): void
-    {
+    ): void {
         $containerBuilder = ContainerBuilderFactory::getInstance();
         $definition = $containerBuilder->getDefinition($injectableServiceId);
         $injectingServiceClasses = self::getServiceClassesUnderNamespace($injectingServicesNamespace, $includeSubfolders);
@@ -105,8 +104,7 @@ class ContainerBuilderUtils {
         string $injectableServiceId,
         string $injectingServiceId,
         string $methodCall
-    ): void
-    {
+    ): void {
         $containerBuilder = ContainerBuilderFactory::getInstance();
         $definition = $containerBuilder->getDefinition($injectableServiceId);
         $definition->addMethodCall($methodCall, [new Reference($injectingServiceId)]);
@@ -124,11 +122,10 @@ class ContainerBuilderUtils {
         string $injectableServiceId,
         string $methodCall,
         ...$values
-    ): void
-    {
+    ): void {
         // If any value is a string starting with '@', then it's a reference to a service!
         $values = array_map(
-            function($value) {
+            function ($value) {
                 if ($value && is_string($value) && substr($value, 0, 1) == '@') {
                     // Return a reference to the service
                     $injectedServiceId = substr($value, 1);
