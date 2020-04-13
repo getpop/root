@@ -6,13 +6,14 @@ use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
 
-class ContainerBuilderFactory {
+class ContainerBuilderFactory
+{
     private static $instance;
     private static $cached;
     private static $cacheFile;
     public static function init($componentDir)
     {
-        self::$cacheFile = $componentDir.'/build/cache/container.php';
+        self::$cacheFile = $componentDir . '/build/cache/container.php';
 
         // Initialize the services from the cached file
         $containerConfigCache = new ConfigCache(self::$cacheFile, Configuration::isConfigCacheDebug());
@@ -38,9 +39,10 @@ class ContainerBuilderFactory {
     public static function maybeCompileAndCacheContainer(): void
     {
         // Compile Symfony's DependencyInjection Container Builder
-        // After compiling, cache it in disk for performance. This happens only the first time the site is accessed on the current server
+        // After compiling, cache it in disk for performance.
+        // This happens only the first time the site is accessed on the current server
         if (!self::$cached) {
-            $containerBuilder = self::getInstance();            // ...
+            $containerBuilder = self::getInstance();
             $containerBuilder->compile();
             $dumper = new PhpDumper($containerBuilder);
             $dir = dirname(self::$cacheFile);

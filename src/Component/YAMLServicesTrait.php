@@ -13,7 +13,7 @@ trait YAMLServicesTrait
         if (!ContainerBuilderFactory::isCached()) {
             // Initialize the ContainerBuilder with this component's service implementations
             $containerBuilder = ContainerBuilderFactory::getInstance();
-            $componentPath = $componentDir.'/config'.($configPath ? '/'. trim($configPath, '/') : '');
+            $componentPath = $componentDir . '/config' . ($configPath ? '/' . trim($configPath, '/') : '');
             $loader = new YamlFileLoader($containerBuilder, new FileLocator($componentPath));
             $loader->load($fileName);
         }
