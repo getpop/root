@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace PoP\Root\Container;
 
 use PoP\Root\Container\ContainerBuilderFactory;
