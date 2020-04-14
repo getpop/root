@@ -1,4 +1,5 @@
 # PoP Root
+
 [![Latest Version on Packagist][ico-version]][link-packagist]
 [![Software License][ico-license]](LICENSE.md)
 [![Build Status][ico-travis]][link-travis]
@@ -10,9 +11,7 @@
 [![Total Downloads][ico-downloads]][link-downloads]
 -->
 
-Declaration of dependencies shared by all PoP components:
-
-**Symfony's DependencyInjection Component**
+Declaration of dependencies shared by all PoP components.
 
 Symfony's [DependencyInjection Component](https://symfony.com/doc/current/components/dependency_injection.html) is used to provide services. `ContainerBuilderFactory` hosts an instance of `ContainerBuilder` which can be used by any component to register and implement the services.
 

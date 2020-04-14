@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PoP\Root\Component;
 
 use PoP\Root\Managers\ComponentManager;
+
 /**
  * Initialize component
  */

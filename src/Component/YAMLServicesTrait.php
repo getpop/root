@@ -10,8 +10,11 @@ use PoP\Root\Container\ContainerBuilderFactory;
 
 trait YAMLServicesTrait
 {
-    public static function initYAMLServices(string $componentDir, string $configPath = '', string $fileName = 'services.yaml')
-    {
+    public static function initYAMLServices(
+        string $componentDir,
+        string $configPath = '',
+        string $fileName = 'services.yaml'
+    ) {
         // First check if the container has been cached. If so, do nothing
         if (!ContainerBuilderFactory::isCached()) {
             // Initialize the ContainerBuilder with this component's service implementations

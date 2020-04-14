@@ -11,7 +11,8 @@ class ContainerBuilderUtils
 {
     /**
      * Get all services located under the specified namespace
-     * It requires the classes to be exposed as services in file services.yaml, using their own class as the service ID, like this:
+     * It requires the classes to be exposed as services in file services.yaml,
+     * using their own class as the service ID, like this:
      *
      * PoP\ComponentModel\FieldResolvers\:
      *     resource: '../src/FieldResolvers/*'
@@ -89,7 +90,10 @@ class ContainerBuilderUtils
     ): void {
         $containerBuilder = ContainerBuilderFactory::getInstance();
         $definition = $containerBuilder->getDefinition($injectableServiceId);
-        $injectingServiceClasses = self::getServiceClassesUnderNamespace($injectingServicesNamespace, $includeSubfolders);
+        $injectingServiceClasses = self::getServiceClassesUnderNamespace(
+            $injectingServicesNamespace,
+            $includeSubfolders
+        );
         foreach ($injectingServiceClasses as $injectingServiceClassId) {
             $definition->addMethodCall($methodCall, [new Reference($injectingServiceClassId)]);
         }
