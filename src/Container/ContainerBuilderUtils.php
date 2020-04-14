@@ -51,7 +51,7 @@ class ContainerBuilderUtils
     /**
      * Initialize a specific class
      *
-     * @param string $namespace
+     * @param string $serviceClass
      * @return void
      */
     public static function instantiateService(string $serviceClass): void
@@ -121,8 +121,8 @@ class ContainerBuilderUtils
      * Inject some value into a service
      *
      * @param string $injectableServiceId
-     * @param string $value
      * @param string $methodCall
+     * @param mixed ...$values
      * @return void
      */
     public static function injectValuesIntoService(
