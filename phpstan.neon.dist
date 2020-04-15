@@ -6,5 +6,5 @@ parameters:
 	ignoreErrors:
 		-
 			message: '#Instantiated class ProjectServiceContainer not found\.#'
-			path: sr/Container/ContainerBuilderFactory.php
+			path: src/Container/ContainerBuilderFactory.php
 			count: 1
