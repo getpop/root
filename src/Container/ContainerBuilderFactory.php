@@ -45,17 +45,22 @@ class ContainerBuilderFactory
         // After compiling, cache it in disk for performance.
         // This happens only the first time the site is accessed on the current server
         if (!self::$cached) {
-            $containerBuilder = self::getInstance();
-            $containerBuilder->compile();
-            $dumper = new PhpDumper($containerBuilder);
+            // Create the folder if it doesn't exist, and check it was successful
             $dir = dirname(self::$cacheFile);
-            if (!file_exists($dir)) {
-                @mkdir($dir, 0777, true);
+            $folderExists = file_exists($dir);
+            if (!$folderExists) {
+                $folderExists = @mkdir($dir, 0777, true);
             }
-            file_put_contents(self::$cacheFile, $dumper->dump());
+            if ($folderExists) {
+                // Compile the container and save it to disk
+                $containerBuilder = self::getInstance();
+                $containerBuilder->compile();
+                $dumper = new PhpDumper($containerBuilder);
+                file_put_contents(self::$cacheFile, $dumper->dump());
 
-            // Change the permissions so it can be modified by external processes (eg: deployment)
-            chmod(self::$cacheFile, 0777);
+                // Change the permissions so it can be modified by external processes (eg: deployment)
+                chmod(self::$cacheFile, 0777);
+            }
         }
     }
 }
