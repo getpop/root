@@ -5,6 +5,6 @@ parameters:
 		- tests
 	ignoreErrors:
 		-
-			message: '#Instantiated class ProjectServiceContainer not found.#'
+			message: '#Instantiated class ProjectServiceContainer not found\.#'
 			path: sr/Container/ContainerBuilderFactory.php
             count: 1
