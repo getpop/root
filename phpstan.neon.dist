@@ -3,4 +3,7 @@ parameters:
 	paths:
 		- src
 		- tests
-        
+	ignoreErrors:
+		-
+			message: '#Instantiated class ProjectServiceContainer not found.#'
+			path: Container/ContainerBuilderFactory.php
