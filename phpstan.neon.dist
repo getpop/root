@@ -3,6 +3,7 @@ parameters:
 	paths:
 		- src
 		- tests
+	reportUnmatchedIgnoredErrors: false
 	ignoreErrors:
 		-
 			message: '#Instantiated class ProjectServiceContainer not found\.#'
