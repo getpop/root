@@ -19,7 +19,8 @@ class ContainerBuilderFactory
         self::$cacheFile = $componentDir . '/build/cache/container.php';
 
         // Initialize the services from the cached file
-        $containerConfigCache = new ConfigCache(self::$cacheFile, Configuration::isConfigCacheDebug());
+        $isDebug = !Configuration::cacheContainerConfiguration();
+        $containerConfigCache = new ConfigCache(self::$cacheFile, $isDebug);
         self::$cached = $containerConfigCache->isFresh();
 
         // If not cached, then create the new instance
