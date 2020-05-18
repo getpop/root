@@ -10,7 +10,7 @@ use Symfony\Component\DependencyInjection\Reference;
 class ContainerBuilderUtils
 {
     /**
-     * Get all services located under the specified namespace
+     * Get all service classes located under the specified namespace
      * It requires the classes to be exposed as services in file services.yaml,
      * using their own class as the service ID, like this:
      *
@@ -32,7 +32,7 @@ class ContainerBuilderUtils
         }
 
         // Obtain all services whose definition id start with the given namespace
-        return array_filter(
+        return array_values(array_filter(
             $containerBuilder->getServiceIds(),
             function ($class) use ($namespace, $includeSubfolders) {
                 return
@@ -45,6 +45,27 @@ class ContainerBuilderUtils
                         strpos($class, '\\', strlen($namespace)) === false
                     );
             }
+        ));
+    }
+
+    /**
+     * Get all services located under the specified namespace
+     * It requires the classes to be exposed as services in file services.yaml,
+     * using their own class as the service ID, like this:
+     *
+     * PoP\ComponentModel\FieldResolvers\:
+     *     resource: '../src/FieldResolvers/*'
+     *     public: true
+     *
+     * @param string $namespace
+     * @param bool $includeSubfolders indicate if not include the classes from the subnamespaces
+     * @return array list of services defined in the container
+     */
+    public static function getServicesUnderNamespace(string $namespace, bool $includeSubfolders = true): array
+    {
+        return array_map(
+            [self::class, 'getService'],
+            self::getServiceClassesUnderNamespace($namespace, $includeSubfolders)
         );
     }
 
@@ -56,8 +77,20 @@ class ContainerBuilderUtils
      */
     public static function instantiateService(string $serviceClass): void
     {
+        // Just by obtaining the service, it gets initialized
+        self::getService($serviceClass);
+    }
+
+    /**
+     * Get a service from a specific class
+     *
+     * @param string $serviceClass
+     * @return void
+     */
+    public static function getService(string $serviceClass): Object
+    {
         $containerBuilder = ContainerBuilderFactory::getInstance();
-        $containerBuilder->get($serviceClass);
+        return $containerBuilder->get($serviceClass);
     }
 
     /**
