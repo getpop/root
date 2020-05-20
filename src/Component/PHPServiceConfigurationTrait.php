@@ -8,7 +8,7 @@ use PoP\Root\Container\ContainerBuilderFactory;
 
 trait PHPServiceConfigurationTrait
 {
-    public static function init()
+    public static function initialize()
     {
         self::initPHPServiceConfiguration();
     }
