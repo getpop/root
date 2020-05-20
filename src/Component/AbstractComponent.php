@@ -29,6 +29,14 @@ abstract class AbstractComponent implements ComponentInterface
             foreach (static::getDependedComponentClasses() as $componentClass) {
                 $componentClass::initialize();
             }
+
+            // Temporary solution until migrated:
+            // Initialize all depended-upon migration plugins
+            foreach (static::getDependedMigrationPlugins() as $migrationPlugin) {
+                // All migration plugins go under /getpop, and have `initialize.php` as entry point
+                // var_dump(basename(basename(basename(__DIR__))) . '/getpop/' . $migrationPlugin . '/initialize.php');die;
+                require_once basename(basename(basename(__DIR__))) . '/getpop/' . $migrationPlugin . '/initialize.php';
+            }
             
             // Initialize the self component
             static::init();
@@ -40,7 +48,14 @@ abstract class AbstractComponent implements ComponentInterface
      *
      * @return array
      */
-    public static function getDependedComponentClasses(): array
+    abstract public static function getDependedComponentClasses(): array;
+
+    /**
+     * All migration plugins that this component depends upon, to initialize them
+     *
+     * @return array
+     */
+    public static function getDependedMigrationPlugins(): array
     {
         return [];
     }
