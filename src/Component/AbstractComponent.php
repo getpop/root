@@ -41,8 +41,7 @@ abstract class AbstractComponent implements ComponentInterface
             // Initialize all depended-upon migration plugins
             foreach (static::getDependedMigrationPlugins() as $migrationPlugin) {
                 // All migration plugins go under /getpop, and have `initialize.php` as entry point
-                // var_dump(basename(basename(basename(__DIR__))) . '/getpop/' . $migrationPlugin . '/initialize.php');die;
-                require_once basename(basename(basename(__DIR__))) . '/getpop/' . $migrationPlugin . '/initialize.php';
+                require_once dirname(dirname(dirname(dirname(__DIR__)))) . '/getpop/' . $migrationPlugin . '/initialize.php';
             }
             
             // Initialize the self component
