@@ -22,9 +22,9 @@ class Component extends AbstractComponent
     /**
      * Initialize services
      */
-    public static function init()
+    protected static function doInitialize()
     {
-        parent::init();
+        parent::doInitialize();
 
         // Initialize Dotenv (before the ContainerBuilder, since this one uses environment constants)
         DotenvBuilderFactory::init();

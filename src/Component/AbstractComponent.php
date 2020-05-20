@@ -45,7 +45,7 @@ abstract class AbstractComponent implements ComponentInterface
             }
             
             // Initialize the self component
-            static::init();
+            static::doInitialize();
         }
     }
 
@@ -79,7 +79,7 @@ abstract class AbstractComponent implements ComponentInterface
     /**
      * Initialize services
      */
-    public static function init()
+    protected static function doInitialize()
     {
         // Register itself in the Manager
         ComponentManager::register(get_called_class());
