@@ -30,6 +30,13 @@ abstract class AbstractComponent implements ComponentInterface
                 $componentClass::initialize();
             }
 
+            // Initialize all depended-upon PoP conditional components, if they are installed
+            foreach (static::getDependedConditionalComponentClasses() as $componentClass) {
+                if (\class_exists($componentClass)) {
+                    $componentClass::initialize();
+                }
+            }
+
             // Temporary solution until migrated:
             // Initialize all depended-upon migration plugins
             foreach (static::getDependedMigrationPlugins() as $migrationPlugin) {
@@ -49,6 +56,16 @@ abstract class AbstractComponent implements ComponentInterface
      * @return array
      */
     abstract public static function getDependedComponentClasses(): array;
+
+    /**
+     * All conditional component classes that this component depends upon, to initialize them
+     *
+     * @return array
+     */
+    public static function getDependedConditionalComponentClasses(): array
+    {
+        return [];
+    }
 
     /**
      * All migration plugins that this component depends upon, to initialize them

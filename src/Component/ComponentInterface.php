@@ -21,6 +21,13 @@ interface ComponentInterface
      */
     public static function getDependedComponentClasses(): array;
 
+    /**
+     * All conditional component classes that this component depends upon, to initialize them
+     *
+     * @return array
+     */
+    public static function getDependedConditionalComponentClasses(): array;
+
     // /**
     //  * Initialize services
     //  */
