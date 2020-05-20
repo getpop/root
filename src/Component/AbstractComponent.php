@@ -5,12 +5,46 @@ declare(strict_types=1);
 namespace PoP\Root\Component;
 
 use PoP\Root\Managers\ComponentManager;
+use PoP\Root\Component\ComponentInterface;
 
 /**
  * Initialize component
  */
-abstract class AbstractComponent
+abstract class AbstractComponent implements ComponentInterface
 {
+    /**
+     * Has the component been initialized?
+     */
+    public static $initializedClasses = [];
+
+    /**
+     * Initialize the component
+     */
+    public static function initialize(): void
+    {
+        if (!in_array(get_called_class(), static::$initializedClasses)) {
+            static::$initializedClasses[] = get_called_class();
+            
+            // Initialize all depended-upon PoP components
+            foreach (static::getDependedComponentClasses() as $componentClass) {
+                $componentClass::initialize();
+            }
+            
+            // Initialize the self component
+            static::init();
+        }
+    }
+
+    /**
+     * All component classes that this component depends upon, to initialize them
+     *
+     * @return array
+     */
+    public static function getDependedComponentClasses(): array
+    {
+        return [];
+    }
+
     /**
      * Initialize services
      */
