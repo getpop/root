@@ -24,7 +24,7 @@ abstract class AbstractComponent implements ComponentInterface
     {
         if (!in_array(get_called_class(), static::$initializedClasses)) {
             static::$initializedClasses[] = get_called_class();
-            
+
             // Initialize all depended-upon PoP components
             foreach (static::getDependedComponentClasses() as $componentClass) {
                 $componentClass::initialize();
@@ -43,7 +43,7 @@ abstract class AbstractComponent implements ComponentInterface
                 // All migration plugins go under /getpop, and have `initialize.php` as entry point
                 require_once dirname(dirname(dirname(dirname(__DIR__)))) . '/getpop/' . $migrationPlugin . '/initialize.php';
             }
-            
+
             // Initialize the self component
             static::doInitialize();
         }
@@ -79,7 +79,7 @@ abstract class AbstractComponent implements ComponentInterface
     /**
      * Initialize services
      */
-    protected static function doInitialize()
+    protected static function doInitialize(): void
     {
         // Register itself in the Manager
         ComponentManager::register(get_called_class());
@@ -90,7 +90,7 @@ abstract class AbstractComponent implements ComponentInterface
      *
      * @return void
      */
-    public static function beforeBoot()
+    public static function beforeBoot(): void
     {
     }
 
@@ -99,7 +99,7 @@ abstract class AbstractComponent implements ComponentInterface
      *
      * @return void
      */
-    public static function boot()
+    public static function boot(): void
     {
     }
 
@@ -108,7 +108,7 @@ abstract class AbstractComponent implements ComponentInterface
      *
      * @return void
      */
-    public static function afterBoot()
+    public static function afterBoot(): void
     {
     }
 }

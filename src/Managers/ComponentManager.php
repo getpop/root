@@ -24,7 +24,7 @@ class ComponentManager
      *
      * @return void
      */
-    public static function beforeBoot()
+    public static function beforeBoot(): void
     {
         foreach (self::$components as $component) {
             $component::beforeBoot();
@@ -36,7 +36,7 @@ class ComponentManager
      *
      * @return void
      */
-    public static function boot()
+    public static function boot(): void
     {
         foreach (self::$components as $component) {
             $component::boot();
@@ -48,7 +48,7 @@ class ComponentManager
      *
      * @return void
      */
-    public static function afterBoot()
+    public static function afterBoot(): void
     {
         foreach (self::$components as $component) {
             $component::afterBoot();

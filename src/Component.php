@@ -22,7 +22,7 @@ class Component extends AbstractComponent
     /**
      * Initialize services
      */
-    protected static function doInitialize()
+    protected static function doInitialize(): void
     {
         parent::doInitialize();
 
@@ -38,7 +38,7 @@ class Component extends AbstractComponent
      *
      * @return void
      */
-    public static function beforeBoot()
+    public static function beforeBoot(): void
     {
         // Compile and Cache Symfony's DependencyInjection Container Builder
         ContainerBuilderFactory::maybeCompileAndCacheContainer();
