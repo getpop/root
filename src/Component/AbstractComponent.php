@@ -13,40 +13,12 @@ use PoP\Root\Component\ComponentInterface;
 abstract class AbstractComponent implements ComponentInterface
 {
     /**
-     * Has the component been initialized?
-     */
-    public static $initializedClasses = [];
-
-    /**
      * Initialize the component
      */
     public static function initialize(): void
     {
-        if (!in_array(get_called_class(), static::$initializedClasses)) {
-            static::$initializedClasses[] = get_called_class();
-
-            // Initialize all depended-upon PoP components
-            foreach (static::getDependedComponentClasses() as $componentClass) {
-                $componentClass::initialize();
-            }
-
-            // Initialize all depended-upon PoP conditional components, if they are installed
-            foreach (static::getDependedConditionalComponentClasses() as $componentClass) {
-                if (\class_exists($componentClass)) {
-                    $componentClass::initialize();
-                }
-            }
-
-            // Temporary solution until migrated:
-            // Initialize all depended-upon migration plugins
-            foreach (static::getDependedMigrationPlugins() as $migrationPlugin) {
-                // All migration plugins go under /getpop, and have `initialize.php` as entry point
-                require_once dirname(dirname(dirname(dirname(__DIR__)))) . '/getpop/' . $migrationPlugin . '/initialize.php';
-            }
-
-            // Initialize the self component
-            static::doInitialize();
-        }
+        // Initialize the self component
+        static::doInitialize();
     }
 
     /**
