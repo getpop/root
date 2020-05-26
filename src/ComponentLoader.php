@@ -17,17 +17,17 @@ class ComponentLoader
     /**
      * Initialize the component
      */
-    public static function initialize(array $componentClasses): void
+    public static function initializeComponents(array $componentClasses): void
     {
         foreach ($componentClasses as $componentClass) {
             if (!in_array($componentClass, self::$initializedClasses)) {
                 self::$initializedClasses[] = $componentClass;
 
                 // Initialize all depended-upon PoP components
-                self::initialize($componentClass::getDependedComponentClasses());
+                self::initializeComponents($componentClass::getDependedComponentClasses());
 
                 // Initialize all depended-upon PoP conditional components, if they are installed
-                self::initialize(array_map(
+                self::initializeComponents(array_map(
                     'class_exists',
                     $componentClass::getDependedConditionalComponentClasses()
                 ));
