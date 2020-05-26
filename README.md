@@ -27,7 +27,9 @@ composer require getpop/root
 Initialize the component:
 
 ``` php
-\PoP\Root\Component::initialize();
+\PoP\Root\ComponentLoader::initializeComponents([
+    \PoP\Root\Component::class,
+]);
 ```
 
 ## Standards
