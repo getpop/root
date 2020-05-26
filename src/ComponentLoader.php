@@ -18,20 +18,19 @@ class ComponentLoader
      * Initialize the PoP components
      *
      * @param array $componentClasses List of `Component` class to initialize
-     * @param array $ignoreComponentClasses List of `Component` class to not initialize
+     * @param array $skipSchemaComponentClasses List of `Component` class to not initialize
      * @return void
      */
     public static function initializeComponents(
         array $componentClasses,
-        array $ignoreComponentClasses = []
+        array $skipSchemaComponentClasses = []
     ): void {
         /**
-         * If any component class is on the ignore list, or has already been initialized,
-         * then do not initialize it
+         * If any component class has already been initialized,
+         * then do nothing
          */
         $componentClasses = array_values(array_diff(
             $componentClasses,
-            $ignoreComponentClasses,
             self::$initializedClasses
         ));
         foreach ($componentClasses as $componentClass) {
@@ -40,7 +39,7 @@ class ComponentLoader
             // Initialize all depended-upon PoP components
             self::initializeComponents(
                 $componentClass::getDependedComponentClasses(),
-                $ignoreComponentClasses
+                $skipSchemaComponentClasses
             );
 
             // Initialize all depended-upon PoP conditional components, if they are installed
@@ -49,7 +48,7 @@ class ComponentLoader
                     $componentClass::getDependedConditionalComponentClasses(),
                     'class_exists'
                 ),
-                $ignoreComponentClasses
+                $skipSchemaComponentClasses
             );
 
             // Temporary solution until migrated:
@@ -59,8 +58,9 @@ class ComponentLoader
                 require_once dirname(dirname(dirname(__DIR__))) . '/getpop/' . $migrationPlugin . '/initialize.php';
             }
 
-            // Initialize the component
-            $componentClass::initialize();
+            // Initialize the component, checking if its schema must be skipped
+            $skipSchemaForComponent = in_array($componentClass, $skipSchemaComponentClasses);
+            $componentClass::initialize($skipSchemaForComponent);
         }
     }
 }

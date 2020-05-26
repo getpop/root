@@ -11,8 +11,11 @@ interface ComponentInterface
 {
     /**
      * Initialize the component
+     *
+     * @param boolean $skipSchema Indicate if to skip initializing the schema
+     * @return void
      */
-    public static function initialize(): void;
+    public static function initialize(bool $skipSchema = false): void;
 
     /**
      * All component classes that this component depends upon, to initialize them
