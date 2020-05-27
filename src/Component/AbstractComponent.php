@@ -18,10 +18,10 @@ abstract class AbstractComponent implements ComponentInterface
      * @param boolean $skipSchema Indicate if to skip initializing the schema
      * @return void
      */
-    public static function initialize(bool $skipSchema = false): void
+    public static function initialize(array $configuration = [], bool $skipSchema = false): void
     {
         // Initialize the self component
-        static::doInitialize($skipSchema);
+        static::doInitialize($configuration, $skipSchema);
     }
 
     /**
@@ -54,7 +54,7 @@ abstract class AbstractComponent implements ComponentInterface
     /**
      * Initialize services
      */
-    protected static function doInitialize(bool $skipSchema = false): void
+    protected static function doInitialize(array $configuration = [], bool $skipSchema = false): void
     {
         // Register itself in the Manager
         ComponentManager::register(get_called_class());

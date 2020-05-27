@@ -23,6 +23,7 @@ class ComponentLoader
      */
     public static function initializeComponents(
         array $componentClasses,
+        array $componentClassConfiguration = [],
         array $skipSchemaComponentClasses = []
     ): void {
         /**
@@ -39,6 +40,7 @@ class ComponentLoader
             // Initialize all depended-upon PoP components
             self::initializeComponents(
                 $componentClass::getDependedComponentClasses(),
+                $componentClassConfiguration,
                 $skipSchemaComponentClasses
             );
 
@@ -48,6 +50,7 @@ class ComponentLoader
                     $componentClass::getDependedConditionalComponentClasses(),
                     'class_exists'
                 ),
+                $componentClassConfiguration,
                 $skipSchemaComponentClasses
             );
 
@@ -58,9 +61,10 @@ class ComponentLoader
                 require_once dirname(dirname(dirname(__DIR__))) . '/getpop/' . $migrationPlugin . '/initialize.php';
             }
 
-            // Initialize the component, checking if its schema must be skipped
+            // Initialize the component, passing its configuration, and checking if its schema must be skipped
+            $componentConfiguration = $componentClassConfiguration[$componentClass] ?? [];
             $skipSchemaForComponent = in_array($componentClass, $skipSchemaComponentClasses);
-            $componentClass::initialize($skipSchemaForComponent);
+            $componentClass::initialize($componentConfiguration, $skipSchemaForComponent);
         }
     }
 }
