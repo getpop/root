@@ -64,7 +64,11 @@ class ComponentLoader
             // Initialize the component, passing its configuration, and checking if its schema must be skipped
             $componentConfiguration = $componentClassConfiguration[$componentClass] ?? [];
             $skipSchemaForComponent = in_array($componentClass, $skipSchemaComponentClasses);
-            $componentClass::initialize($componentConfiguration, $skipSchemaForComponent);
+            $componentClass::initialize(
+                $componentConfiguration,
+                $skipSchemaForComponent,
+                $skipSchemaComponentClasses
+            );
         }
     }
 }

@@ -15,7 +15,11 @@ interface ComponentInterface
      * @param boolean $skipSchema Indicate if to skip initializing the schema
      * @return void
      */
-    public static function initialize(array $configuration = [], bool $skipSchema = false): void;
+    public static function initialize(
+        array $configuration = [],
+        bool $skipSchema = false,
+        array $skipSchemaComponentClasses = []
+    ): void;
 
     /**
      * All component classes that this component depends upon, to initialize them

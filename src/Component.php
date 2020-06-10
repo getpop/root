@@ -22,9 +22,12 @@ class Component extends AbstractComponent
     /**
      * Initialize services
      */
-    protected static function doInitialize(array $configuration = [], bool $skipSchema = false): void
-    {
-        parent::doInitialize($configuration, $skipSchema);
+    protected static function doInitialize(
+        array $configuration = [],
+        bool $skipSchema = false,
+        array $skipSchemaComponentClasses = []
+    ): void {
+        parent::doInitialize($configuration, $skipSchema, $skipSchemaComponentClasses);
 
         // Initialize Dotenv (before the ContainerBuilder, since this one uses environment constants)
         DotenvBuilderFactory::init();
