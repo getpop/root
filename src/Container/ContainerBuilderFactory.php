@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PoP\Root\Container;
 
+use InvalidArgumentException;
 use PoP\Root\Component\Configuration;
 use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -14,9 +15,51 @@ class ContainerBuilderFactory
     private static $instance;
     private static $cached;
     private static $cacheFile;
-    public static function init($componentDir)
+
+    /**
+     * Initialize the Container Builder.
+     * If the directory is not provided, store the cache in a system temp dir
+     *
+     * @param string|null $directory directory where to store the cache
+     * @param string|null $namespace subdirectory under which to store the cache
+     * @return void
+     */
+    public static function init(?string $namespace = null, ?string $directory = null)
     {
-        self::$cacheFile = $componentDir . '/build/cache/container.php';
+        /**
+         * Code copied from Symfony FilesystemAdapter
+         * @see https://github.com/symfony/cache/blob/master/Traits/FilesystemCommonTrait.php
+         */
+        if (!$directory) {
+            $directory = sys_get_temp_dir() . \DIRECTORY_SEPARATOR . 'pop' . \DIRECTORY_SEPARATOR . 'container-cache';
+        }
+        if ($namespace) {
+            if (preg_match('#[^-+_.A-Za-z0-9]#', $namespace, $match)) {
+                throw new InvalidArgumentException(
+                    sprintf(
+                        'Namespace contains "%s" but only characters in [-+_.A-Za-z0-9] are allowed.',
+                        $match[0]
+                    )
+                );
+            }
+            $directory .= \DIRECTORY_SEPARATOR . $namespace;
+        }
+        if (!is_dir($directory)) {
+            @mkdir($directory, 0777, true);
+        }
+        $directory .= \DIRECTORY_SEPARATOR;
+        // On Windows the whole path is limited to 258 chars
+        if ('\\' === \DIRECTORY_SEPARATOR && \strlen($directory) > 234) {
+            throw new InvalidArgumentException(
+                sprintf(
+                    'Cache directory too long (%s).',
+                    $directory
+                )
+            );
+        }
+
+        // Store the cache under this file
+        self::$cacheFile = $directory . 'container.php';
 
         // Initialize the services from the cached file
         $isDebug = !Configuration::cacheContainerConfiguration();

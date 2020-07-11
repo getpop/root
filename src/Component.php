@@ -33,7 +33,12 @@ class Component extends AbstractComponent
         DotenvBuilderFactory::init();
 
         // Initialize the ContainerBuilder
-        ContainerBuilderFactory::init(dirname(__DIR__));
+        // Provide a namespace, but not a directory (then it will use a system temp folder)
+        $namespace =
+            $configuration[Environment::CACHE_CONTAINER_CONFIGURATION_NAMESPACE] ??
+            Environment::getCacheContainerConfigurationNamespace();
+        // $directory = dirname(__DIR__) . \DIRECTORY_SEPARATOR . 'build' . \DIRECTORY_SEPARATOR . 'cache';
+        ContainerBuilderFactory::init($namespace/*, $directory*/);
     }
 
     /**
