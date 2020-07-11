@@ -13,6 +13,7 @@ use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
 class ContainerBuilderFactory
 {
     private static $instance;
+    private static $cacheContainerConfiguration;
     private static $cached;
     private static $cacheFile;
 
@@ -20,12 +21,17 @@ class ContainerBuilderFactory
      * Initialize the Container Builder.
      * If the directory is not provided, store the cache in a system temp dir
      *
+     * @param bool $cacheContainerConfiguration Indicate if to cache the container configuration
      * @param string|null $directory directory where to store the cache
      * @param string|null $namespace subdirectory under which to store the cache
      * @return void
      */
-    public static function init(?string $namespace = null, ?string $directory = null)
-    {
+    public static function init(
+        bool $cacheContainerConfiguration = false,
+        ?string $namespace = null,
+        ?string $directory = null
+    ): void {
+        self::$cacheContainerConfiguration = $cacheContainerConfiguration;
         /**
          * Code copied from Symfony FilesystemAdapter
          * @see https://github.com/symfony/cache/blob/master/Traits/FilesystemCommonTrait.php
@@ -62,7 +68,7 @@ class ContainerBuilderFactory
         self::$cacheFile = $directory . 'container.php';
 
         // If not caching the container, then it's for development
-        $isDebug = !Environment::cacheContainerConfiguration();
+        $isDebug = !self::$cacheContainerConfiguration;
         $containerConfigCache = new ConfigCache(self::$cacheFile, $isDebug);
         self::$cached = $containerConfigCache->isFresh();
 
@@ -89,21 +95,26 @@ class ContainerBuilderFactory
         // After compiling, cache it in disk for performance.
         // This happens only the first time the site is accessed on the current server
         if (!self::$cached) {
-            // Create the folder if it doesn't exist, and check it was successful
-            $dir = dirname(self::$cacheFile);
-            $folderExists = file_exists($dir);
-            if (!$folderExists) {
-                $folderExists = @mkdir($dir, 0777, true);
-            }
-            if ($folderExists) {
-                // Compile the container and save it to disk
-                $containerBuilder = self::getInstance();
-                $containerBuilder->compile();
-                $dumper = new PhpDumper($containerBuilder);
-                file_put_contents(self::$cacheFile, $dumper->dump());
+            // Compile the container
+            $containerBuilder = self::getInstance();
+            $containerBuilder->compile();
 
-                // Change the permissions so it can be modified by external processes (eg: deployment)
-                chmod(self::$cacheFile, 0777);
+            // Cache the container
+            if (self::$cacheContainerConfiguration) {
+                // Create the folder if it doesn't exist, and check it was successful
+                $dir = dirname(self::$cacheFile);
+                $folderExists = file_exists($dir);
+                if (!$folderExists) {
+                    $folderExists = @mkdir($dir, 0777, true);
+                }
+                if ($folderExists) {
+                    // Save the container to disk
+                    $dumper = new PhpDumper($containerBuilder);
+                    file_put_contents(self::$cacheFile, $dumper->dump());
+
+                    // Change the permissions so it can be modified by external processes (eg: deployment)
+                    chmod(self::$cacheFile, 0777);
+                }
             }
         }
     }
