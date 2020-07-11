@@ -7,7 +7,7 @@ namespace PoP\Root;
 class Environment
 {
     public const CACHE_CONTAINER_CONFIGURATION = 'CACHE_CONTAINER_CONFIGURATION';
-    public const CACHE_CONTAINER_CONFIGURATION_NAMESPACE = 'CACHE_CONTAINER_CONFIGURATION_NAMESPACE';
+    public const CONTAINER_CONFIGURATION_CACHE_NAMESPACE = 'CONTAINER_CONFIGURATION_CACHE_NAMESPACE';
 
     /**
      * Indicate if to cache the container configuration.
@@ -30,6 +30,6 @@ class Environment
 
     public static function getCacheContainerConfigurationNamespace(): ?string
     {
-        return $_ENV[self::CACHE_CONTAINER_CONFIGURATION_NAMESPACE];
+        return $_ENV[self::CONTAINER_CONFIGURATION_CACHE_NAMESPACE];
     }
 }

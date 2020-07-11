@@ -40,7 +40,7 @@ class Component extends AbstractComponent
 
         // Provide a namespace, from configuration if defined, or from the environment
         $namespace =
-            $configuration[Environment::CACHE_CONTAINER_CONFIGURATION_NAMESPACE] ??
+            $configuration[Environment::CONTAINER_CONFIGURATION_CACHE_NAMESPACE] ??
             Environment::getCacheContainerConfigurationNamespace();
 
             // No need to provide a directory => then it will use a system temp folder
