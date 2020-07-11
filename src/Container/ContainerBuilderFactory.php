@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PoP\Root\Container;
 
 use InvalidArgumentException;
-use PoP\Root\Component\Configuration;
+use PoP\Root\Environment;
 use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
@@ -61,8 +61,8 @@ class ContainerBuilderFactory
         // Store the cache under this file
         self::$cacheFile = $directory . 'container.php';
 
-        // Initialize the services from the cached file
-        $isDebug = !Configuration::cacheContainerConfiguration();
+        // If not caching the container, then it's for development
+        $isDebug = !Environment::cacheContainerConfiguration();
         $containerConfigCache = new ConfigCache(self::$cacheFile, $isDebug);
         self::$cached = $containerConfigCache->isFresh();
 
