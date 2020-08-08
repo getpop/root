@@ -57,8 +57,9 @@ class ComponentLoader
             // Temporary solution until migrated:
             // Initialize all depended-upon migration plugins
             foreach ($componentClass::getDependedMigrationPlugins() as $migrationPlugin) {
-                // All migration plugins go under /getpop, and have `initialize.php` as entry point
-                require_once dirname(__DIR__, 3) . '/getpop/' . $migrationPlugin . '/initialize.php';
+                // All migration plugins must be composed of "owner/package",
+                // and have `initialize.php` as entry point
+                require_once dirname(__DIR__, 3) . '/' . $migrationPlugin . '/initialize.php';
             }
 
             // Initialize the component, passing its configuration, and checking if its schema must be skipped
