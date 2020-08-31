@@ -3,7 +3,8 @@ language: php
 
 php:
 #   - 7.2
-#   - 7.3
+#   - 7.2
+  - 7.1
   - 7.4
 
 ## Cache composer
@@ -18,11 +19,17 @@ cache:
 #       env: 'COMPOSER_FLAGS="--prefer-stable --prefer-lowest"'
 
 before_script:
-  - travis_retry composer update ${COMPOSER_FLAGS} --no-interaction --prefer-dist
+    # For PHP 7.1 replace min PHP version in Composer
+    - if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.1" ]]; then sed -i 's/"php": "~7.4"/"php": "~7.1"/' composer.json; fi
+    - travis_retry composer update ${COMPOSER_FLAGS} --no-interaction --prefer-dist
+    # Use Rector to downgrade code from PHP 7.4 to 7.1
+    - if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.1" ]]; then vendor/bin/rector process src; fi
 
 script:
-  - vendor/bin/phpcs -n --standard=psr2 src/
-  - vendor/bin/phpunit --coverage-text --coverage-clover=coverage.clover
+  # Tests only on PHP 7.4
+  - if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.1" ]]; then vendor/bin/phpcs -n --standard=psr2 src/
+  - if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.1" ]]; then vendor/bin/phpunit --coverage-text --coverage-clover=coverage.clover
+  # Code analysis on all PHP versions
   - vendor/bin/phpstan analyse -c phpstan.neon.dist src
 
 after_script:
