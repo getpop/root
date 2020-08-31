@@ -18,9 +18,9 @@ cache:
 
 before_script:
     # For PHP 7.2 replace PHP version constraint from 7.4 to 7.2
-    - if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.2" ]]; then composer require php:~7.2; fi
+    - if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.2" ]]; then composer require php:~7.2 --no-update --no-scripts; fi
     # For PHP 7.2 remove PHPUnit: version cannot be satisfied, and tests are not run anyway
-    - if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.2" ]]; then composer remove phpunit/phpunit --dev; fi
+    - if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.2" ]]; then composer remove phpunit/phpunit --dev --no-update --no-scripts; fi
     - travis_retry composer update ${COMPOSER_FLAGS} --no-interaction --prefer-dist
     # Use Rector to downgrade code from PHP 7.4 to 7.2
     - if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.2" ]]; then vendor/bin/rector process src; fi
