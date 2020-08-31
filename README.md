@@ -32,6 +32,27 @@ Initialize the component:
 ]);
 ```
 
+## PHP Versions
+
+This component uses PHP 7.1 code, with the potential addition of:
+
+- Typed properties from PHP 7.4
+
+Development/production can be decoupled, enabling for greater support of PHP:
+
+- PHP 7.4 is required for development
+- PHP 7.1 can be used for production
+
+### Downgrading PHP version for production
+
+The PHP 7.1-compatible code for production can be generated via [Rector](https://github.com/rectorphp/rector).
+
+To downgrade the code, run:
+
+```bash
+composer downgrade-code
+```
+
 ## Standards
 
 [PSR-1](https://www.php-fig.org/psr/psr-1), [PSR-4](https://www.php-fig.org/psr/psr-4) and [PSR-12](https://www.php-fig.org/psr/psr-12).
