@@ -47,6 +47,8 @@ Development/production can be decoupled, enabling for greater support of PHP:
 
 The PHP 7.1-compatible code for production can be generated via [Rector](https://github.com/rectorphp/rector).
 
+The new code is replaces the original code in the source file, so this command must be executed in the CI pipeline, when deploying to production.
+
 To downgrade the code, run:
 
 ```bash
