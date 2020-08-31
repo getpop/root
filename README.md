@@ -49,7 +49,7 @@ The PHP 7.1-compatible code for production can be generated via [Rector](https:/
 
 The new code is replaces the original code in the source file, so this command must be executed in the CI pipeline, when deploying to production.
 
-To downgrade the code, run:
+To downgrade the code using `--dry-run`, run:
 
 ```bash
 composer downgrade-code
