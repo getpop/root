@@ -26,5 +26,5 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     ]);
 
     // is your PHP version different from the one your refactor to? [default: your PHP version]
-    $parameters->set(Option::PHP_VERSION_FEATURES, '7.1');
+    $parameters->set(Option::PHP_VERSION_FEATURES, '7.2');
 };

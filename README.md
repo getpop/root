@@ -34,18 +34,18 @@ Initialize the component:
 
 ## PHP Versions
 
-This component uses PHP 7.1 code, with the potential addition of:
+This component uses PHP 7.2 code, with the potential addition of:
 
 - Typed properties from PHP 7.4
 
 Development/production can be decoupled, enabling for greater support of PHP:
 
 - PHP 7.4 is required for development
-- PHP 7.1 can be used for production
+- PHP 7.2 can be used for production
 
 ### Downgrading PHP version for production
 
-The PHP 7.1-compatible code for production can be generated via [Rector](https://github.com/rectorphp/rector).
+The PHP 7.2-compatible code for production can be generated via [Rector](https://github.com/rectorphp/rector).
 
 The new code is replaces the original code in the source file, so this command must be executed in the CI pipeline, when deploying to production.
 
