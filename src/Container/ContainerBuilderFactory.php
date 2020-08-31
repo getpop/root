@@ -51,7 +51,12 @@ class ContainerBuilderFactory
             $directory .= \DIRECTORY_SEPARATOR . $namespace;
         }
         if (!is_dir($directory)) {
-            @mkdir($directory, 0777, true);
+            if (@mkdir($directory, 0777, true) === false) {
+                throw new \RuntimeException(sprintf(
+                    'The directory %s could not be created.',
+                    $directory
+                ));
+            }
         }
         $directory .= \DIRECTORY_SEPARATOR;
         // On Windows the whole path is limited to 258 chars
