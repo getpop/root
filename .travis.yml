@@ -37,7 +37,8 @@ before_script:
     - if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.2" ]]; then composer remove phpunit/phpunit --dev --no-update --no-scripts; fi
     - travis_retry composer update ${COMPOSER_FLAGS} --no-interaction --prefer-dist
     # For PHP 7.2 downgrade the code via Rector
-    - if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.2" ]]; then vendor/bin/rector process src; fi
+    # Commenting this line must make the process for PHP 7.2 fail
+    # - if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.2" ]]; then vendor/bin/rector process src; fi
 
 script:
   # Tests only on PHP 7.4
