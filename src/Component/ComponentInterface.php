@@ -12,7 +12,7 @@ interface ComponentInterface
     /**
      * Initialize the component
      *
-     * @param mixed[] $configuration
+     * @param array<string, mixed> $configuration
      * @param boolean $skipSchema Indicate if to skip initializing the schema
      * @param string[] $skipSchemaComponentClasses
      */

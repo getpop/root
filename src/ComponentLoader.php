@@ -20,7 +20,7 @@ class ComponentLoader
      * Initialize the PoP components
      *
      * @param string[] $componentClasses List of `Component` class to initialize
-     * @param mixed[] $componentClassConfiguration Custom configuration for each component, with the component class as key
+     * @param array<string, mixed> $componentClassConfiguration [key]: Component class, [value]: Configuration
      * @param string[] $skipSchemaComponentClasses List of `Component` class to not initialize
      */
     public static function initializeComponents(

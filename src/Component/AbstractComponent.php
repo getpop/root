@@ -15,7 +15,7 @@ abstract class AbstractComponent implements ComponentInterface
     /**
      * Initialize the component
      *
-     * @param mixed[] $configuration
+     * @param array<string, mixed> $configuration
      * @param boolean $skipSchema Indicate if to skip initializing the schema
      * @param string[] $skipSchemaComponentClasses
      */
@@ -58,7 +58,7 @@ abstract class AbstractComponent implements ComponentInterface
     /**
      * Initialize services
      *
-     * @param mixed[] $configuration
+     * @param array<string, mixed> $configuration
      * @param string[] $skipSchemaComponentClasses
      */
     protected static function doInitialize(
