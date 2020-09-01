@@ -11,15 +11,17 @@ class ComponentLoader
 {
     /**
      * Has the component been initialized?
+     *
+     * @var string[]
      */
     protected static $initializedClasses = [];
 
     /**
      * Initialize the PoP components
      *
-     * @param array $componentClasses List of `Component` class to initialize
-     * @param array $skipSchemaComponentClasses List of `Component` class to not initialize
-     * @return void
+     * @param string[] $componentClasses List of `Component` class to initialize
+     * @param mixed[] $componentClassConfiguration Custom configuration for each component, with the component class as key
+     * @param string[] $skipSchemaComponentClasses List of `Component` class to not initialize
      */
     public static function initializeComponents(
         array $componentClasses,

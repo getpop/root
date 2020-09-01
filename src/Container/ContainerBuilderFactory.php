@@ -5,17 +5,16 @@ declare(strict_types=1);
 namespace PoP\Root\Container;
 
 use InvalidArgumentException;
-use PoP\Root\Environment;
 use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
 
 class ContainerBuilderFactory
 {
-    private static $instance;
-    private static $cacheContainerConfiguration;
-    private static $cached;
-    private static $cacheFile;
+    private static ContainerBuilder $instance;
+    private static bool $cacheContainerConfiguration;
+    private static bool $cached;
+    private static string $cacheFile;
 
     /**
      * Initialize the Container Builder.
@@ -85,11 +84,11 @@ class ContainerBuilderFactory
             self::$instance = new \ProjectServiceContainer();
         }
     }
-    public static function getInstance()
+    public static function getInstance(): ContainerBuilder
     {
         return self::$instance;
     }
-    public static function isCached()
+    public static function isCached(): bool
     {
         return self::$cached;
     }

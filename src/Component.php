@@ -18,7 +18,7 @@ class Component extends AbstractComponent
     /**
      * Classes from PoP components that must be initialized before this component
      *
-     * @return array<string>
+     * @return string[]
      */
     public static function getDependedComponentClasses(): array
     {
@@ -26,6 +26,9 @@ class Component extends AbstractComponent
     }
     /**
      * Initialize services
+     *
+     * @param mixed[] $configuration
+     * @param string[] $skipSchemaComponentClasses
      */
     protected static function doInitialize(
         array $configuration = [],

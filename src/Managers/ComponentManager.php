@@ -9,12 +9,15 @@ namespace PoP\Root\Managers;
  */
 class ComponentManager
 {
-    private static $components = [];
+    /**
+     * @var string[]
+     */
+    private static array $components = [];
 
     /**
      * Register a component
      */
-    public static function register(string $component)
+    public static function register(string $component): void
     {
         self::$components[] = $component;
     }

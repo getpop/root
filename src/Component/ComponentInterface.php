@@ -12,8 +12,9 @@ interface ComponentInterface
     /**
      * Initialize the component
      *
+     * @param mixed[] $configuration
      * @param boolean $skipSchema Indicate if to skip initializing the schema
-     * @return void
+     * @param string[] $skipSchemaComponentClasses
      */
     public static function initialize(
         array $configuration = [],
@@ -24,14 +25,19 @@ interface ComponentInterface
     /**
      * All component classes that this component depends upon, to initialize them
      *
-     * @return array
+     * @return string[]
+     */
+    /**
+     * Classes from PoP components that must be initialized before this component
+     *
+     * @return string[]
      */
     public static function getDependedComponentClasses(): array;
 
     /**
      * All conditional component classes that this component depends upon, to initialize them
      *
-     * @return array
+     * @return string[]
      */
     public static function getDependedConditionalComponentClasses(): array;
 

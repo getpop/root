@@ -18,9 +18,9 @@ class ContainerBuilderUtils
      *     resource: '../src/FieldResolvers/*'
      *     public: true
      *
-     * @param string $namespace
+     * @param string $namespace Under what namespace to retrieve the services
      * @param bool $includeSubfolders indicate if not include the classes from the subnamespaces
-     * @return array list of services ids defined in the container
+     * @return string[] List of services ids defined in the container
      */
     public static function getServiceClassesUnderNamespace(string $namespace, bool $includeSubfolders = true): array
     {

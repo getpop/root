@@ -15,8 +15,9 @@ abstract class AbstractComponent implements ComponentInterface
     /**
      * Initialize the component
      *
+     * @param mixed[] $configuration
      * @param boolean $skipSchema Indicate if to skip initializing the schema
-     * @return void
+     * @param string[] $skipSchemaComponentClasses
      */
     public static function initialize(
         array $configuration = [],
@@ -30,14 +31,14 @@ abstract class AbstractComponent implements ComponentInterface
     /**
      * All component classes that this component depends upon, to initialize them
      *
-     * @return array
+     * @return string[]
      */
     abstract public static function getDependedComponentClasses(): array;
 
     /**
      * All conditional component classes that this component depends upon, to initialize them
      *
-     * @return array
+     * @return string[]
      */
     public static function getDependedConditionalComponentClasses(): array
     {
@@ -47,7 +48,7 @@ abstract class AbstractComponent implements ComponentInterface
     /**
      * All migration plugins that this component depends upon, to initialize them
      *
-     * @return array
+     * @return string[]
      */
     public static function getDependedMigrationPlugins(): array
     {
@@ -56,6 +57,9 @@ abstract class AbstractComponent implements ComponentInterface
 
     /**
      * Initialize services
+     *
+     * @param mixed[] $configuration
+     * @param string[] $skipSchemaComponentClasses
      */
     protected static function doInitialize(
         array $configuration = [],
