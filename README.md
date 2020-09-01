@@ -32,24 +32,24 @@ Initialize the component:
 ]);
 ```
 
-## PHP requirements
+## PHP versions
 
-Supported PHP code:
+Allowed PHP code:
 
 - PHP 7.2
-- From PHP 7.4: Typed properties
+- Typed properties from PHP 7.4
 
-Development/production can be decoupled:
+The code can be transformed to support older versions of PHP in production:
 
-- PHP 7.4 is required for development
-- PHP 7.2 can be used for production
-    - After removing typed properties
+| | Development | Production |
+| --- | --- | --- |
+| **Min PHP version** | 7.4 | 7.2 (After removing typed properties) |
 
 ### Downgrading PHP code
 
-The code for production is generated via [Rector](https://github.com/rectorphp/rector).
+Via [Rector](https://github.com/rectorphp/rector):
 
-To downgrade the code using `--dry-run`, run:
+Dry run to downgrade the code:
 
 ```bash
 composer downgrade-code
