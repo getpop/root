@@ -39,7 +39,7 @@ Allowed PHP code:
 - PHP 7.2
 - Typed properties from PHP 7.4
 
-The code can be transformed to support older versions of PHP in production:
+The code can be downgraded from PHP 7.4 to PHP 7.2 to run in production:
 
 | | Development | Production |
 | --- | --- | --- |
@@ -47,9 +47,7 @@ The code can be transformed to support older versions of PHP in production:
 
 ### Downgrading PHP code
 
-Via [Rector](https://github.com/rectorphp/rector):
-
-Dry run to downgrade the code:
+Dry run to downgrade the code, via [Rector](https://github.com/rectorphp/rector):
 
 ```bash
 composer downgrade-code
