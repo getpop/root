@@ -48,7 +48,7 @@ if (!defined('PHP_VERSION_ID') || (defined('PHP_VERSION_ID') && PHP_VERSION_ID <
          */
         function str_ends_with(string $haystack, string $needle): bool
         {
-            return substr($haystack, -strlen($needle)) === $needle
+            return substr($haystack, -strlen($needle)) === $needle;
         }
     }
 }
