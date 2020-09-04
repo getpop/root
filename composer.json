@@ -31,7 +31,10 @@
     "autoload": {
         "psr-4": {
             "PoP\\Root\\": "src"
-        }
+        },
+        "files": [
+            "lib/backporting/php80.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
