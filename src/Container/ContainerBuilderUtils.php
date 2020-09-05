@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PoP\Root\Container;
 
 use PoP\Root\Container\ContainerBuilderFactory;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
 class ContainerBuilderUtils
@@ -88,6 +89,9 @@ class ContainerBuilderUtils
         string $methodCall,
         bool $includeSubfolders = true
     ): void {
+        /**
+         * @var ContainerBuilder
+         */
         $containerBuilder = ContainerBuilderFactory::getInstance();
         $definition = $containerBuilder->getDefinition($injectableServiceId);
         $injectingServiceClasses = self::getServiceClassesUnderNamespace(
@@ -112,6 +116,9 @@ class ContainerBuilderUtils
         string $injectingServiceId,
         string $methodCall
     ): void {
+        /**
+         * @var ContainerBuilder
+         */
         $containerBuilder = ContainerBuilderFactory::getInstance();
         $definition = $containerBuilder->getDefinition($injectableServiceId);
         $definition->addMethodCall($methodCall, [new Reference($injectingServiceId)]);
@@ -142,6 +149,9 @@ class ContainerBuilderUtils
             },
             $values
         );
+        /**
+         * @var ContainerBuilder
+         */
         $containerBuilder = ContainerBuilderFactory::getInstance();
         $definition = $containerBuilder->getDefinition($injectableServiceId);
         $definition->addMethodCall($methodCall, $values);

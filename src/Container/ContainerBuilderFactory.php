@@ -6,12 +6,13 @@ namespace PoP\Root\Container;
 
 use InvalidArgumentException;
 use Symfony\Component\Config\ConfigCache;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
 
 class ContainerBuilderFactory
 {
-    private static ContainerBuilder $instance;
+    private static Container $instance;
     private static bool $cacheContainerConfiguration;
     private static bool $cached;
     private static string $cacheFile;
@@ -84,7 +85,7 @@ class ContainerBuilderFactory
             self::$instance = new \ProjectServiceContainer();
         }
     }
-    public static function getInstance(): ContainerBuilder
+    public static function getInstance(): Container
     {
         return self::$instance;
     }
@@ -100,6 +101,9 @@ class ContainerBuilderFactory
         // This happens only the first time the site is accessed on the current server
         if (!self::$cached) {
             // Compile the container
+            /**
+             * @var ContainerBuilder
+             */
             $containerBuilder = self::getInstance();
             $containerBuilder->compile();
 
