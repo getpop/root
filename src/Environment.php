@@ -30,6 +30,6 @@ class Environment
 
     public static function getCacheContainerConfigurationNamespace(): ?string
     {
-        return isset($_ENV[self::CONTAINER_CONFIGURATION_CACHE_NAMESPACE]) ? $_ENV[self::CONTAINER_CONFIGURATION_CACHE_NAMESPACE] : null;
+        return getenv(self::CONTAINER_CONFIGURATION_CACHE_NAMESPACE) !== false ? getenv(self::CONTAINER_CONFIGURATION_CACHE_NAMESPACE) : null;
     }
 }
