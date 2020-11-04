@@ -44,7 +44,7 @@ interface ComponentInterface
     // /**
     //  * Initialize services
     //  */
-    // public static function init();
+    // public static function init(): void;
 
     /**
      * Function called by the Bootloader after all components have been loaded

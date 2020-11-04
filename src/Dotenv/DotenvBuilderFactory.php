@@ -13,7 +13,7 @@ class DotenvBuilderFactory
      *
      * @return void
      */
-    public static function init()
+    public static function init(): void
     {
         // Set the folder where to find .env files through an environment constant.
         // If not set, use "/config" in the root directory
