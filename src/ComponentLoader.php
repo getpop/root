@@ -29,33 +29,25 @@ class ComponentLoader
         array $skipSchemaComponentClasses = []
     ): void {
         /**
-         * If any component class has already been initialized,
-         * then do nothing
+         * Get the list of components, in the order in which they must be initialized
          */
-        $componentClasses = array_values(array_diff(
-            $componentClasses,
-            self::$initializedClasses
-        ));
-        foreach ($componentClasses as $componentClass) {
-            self::$initializedClasses[] = $componentClass;
+        $orderedComponentClasses = self::getComponentsOrderedForInitialization(
+            $componentClasses
+        );
 
-            // Initialize all depended-upon PoP components
-            self::initializeComponents(
-                $componentClass::getDependedComponentClasses(),
-                $componentClassConfiguration,
-                $skipSchemaComponentClasses
-            );
+        /**
+         * Allow each component to customize the configuration for itself,
+         * and for its depended-upon components.
+         * Hence this is executed from bottom to top
+         */
+        foreach (array_reverse($orderedComponentClasses) as $componentClass) {
+            $componentClass::customizeComponentClassConfiguration($componentClassConfiguration);
+        }
 
-            // Initialize all depended-upon PoP conditional components, if they are installed
-            self::initializeComponents(
-                array_filter(
-                    $componentClass::getDependedConditionalComponentClasses(),
-                    'class_exists'
-                ),
-                $componentClassConfiguration,
-                $skipSchemaComponentClasses
-            );
-
+        /**
+         * Initialize the components
+         */
+        foreach ($orderedComponentClasses as $componentClass) {
             // Temporary solution until migrated:
             // Initialize all depended-upon migration plugins
             foreach ($componentClass::getDependedMigrationPlugins() as $migrationPlugin) {
@@ -72,6 +64,64 @@ class ComponentLoader
                 $skipSchemaForComponent,
                 $skipSchemaComponentClasses
             );
+        }
+    }
+
+    /**
+     * Get the array of components ordered by how they must be initialized,
+     * following the Composer dependencies tree
+     *
+     * @param string[] $componentClasses List of `Component` class to initialize
+     */
+    protected static function getComponentsOrderedForInitialization(
+        array $componentClasses
+    ): array {
+        $orderedComponentClasses = [];
+        self::addComponentsOrderedForInitialization(
+            $componentClasses,
+            $orderedComponentClasses
+        );
+        return $orderedComponentClasses;
+    }
+
+    /**
+     * Get the array of components ordered by how they must be initialized,
+     * following the Composer dependencies tree
+     *
+     * @param string[] $componentClasses List of `Component` class to initialize
+     */
+    protected static function addComponentsOrderedForInitialization(
+        array $componentClasses,
+        array &$orderedComponentClasses
+    ): void {
+        /**
+         * If any component class has already been initialized,
+         * then do nothing
+         */
+        $componentClasses = array_values(array_diff(
+            $componentClasses,
+            self::$initializedClasses
+        ));
+        foreach ($componentClasses as $componentClass) {
+            self::$initializedClasses[] = $componentClass;
+
+            // Initialize all depended-upon PoP components
+            self::addComponentsOrderedForInitialization(
+                $componentClass::getDependedComponentClasses(),
+                $orderedComponentClasses
+            );
+
+            // Initialize all depended-upon PoP conditional components, if they are installed
+            self::addComponentsOrderedForInitialization(
+                array_filter(
+                    $componentClass::getDependedConditionalComponentClasses(),
+                    'class_exists'
+                ),
+                $orderedComponentClasses
+            );
+
+            // We reached the bottom of the rung, add the component to the list
+            $orderedComponentClasses[] = $componentClass;
         }
     }
 }

@@ -13,6 +13,17 @@ use PoP\Root\Component\ComponentInterface;
 abstract class AbstractComponent implements ComponentInterface
 {
     /**
+     * Enable each component to set default configuration for
+     * itself and its depended components
+     *
+     * @param array<string, mixed> $componentClassConfiguration
+     */
+    public static function customizeComponentClassConfiguration(
+        array &$componentClassConfiguration
+    ): void {
+    }
+
+    /**
      * Initialize the component
      *
      * @param array<string, mixed> $configuration
