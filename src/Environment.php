@@ -28,8 +28,25 @@ class Environment
         return $useCache !== false ? strtolower($useCache) == "true" : false;
     }
 
+    /**
+     * By default, use the application version
+     */
     public static function getCacheContainerConfigurationNamespace(): ?string
     {
-        return getenv(self::CONTAINER_CONFIGURATION_CACHE_NAMESPACE) !== false ? getenv(self::CONTAINER_CONFIGURATION_CACHE_NAMESPACE) : null;
+        if (getenv(self::CONTAINER_CONFIGURATION_CACHE_NAMESPACE) !== false) {
+            return getenv(self::CONTAINER_CONFIGURATION_CACHE_NAMESPACE);
+        }
+        if ($applicationVersion = self::getApplicationVersion()) {
+            return '_' . $applicationVersion;
+        }
+        return null;
+    }
+
+    /**
+     * Provide the application version, definable by env var
+     */
+    public static function getApplicationVersion(): ?string
+    {
+        return getenv('APPLICATION_VERSION') !== false ? getenv('APPLICATION_VERSION') : null;
     }
 }
