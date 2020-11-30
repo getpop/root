@@ -29,17 +29,22 @@ class Environment
     }
 
     /**
-     * By default, use the application version
+     * By default, use the SERVER_NAME + application version
      */
     public static function getCacheContainerConfigurationNamespace(): ?string
     {
         if (getenv(self::CONTAINER_CONFIGURATION_CACHE_NAMESPACE) !== false) {
             return getenv(self::CONTAINER_CONFIGURATION_CACHE_NAMESPACE);
         }
+        /**
+         * SERVER_NAME is used for if several applications are deployed
+         * on the same server and they share the /tmp folder
+         */
+        $sitename = strtolower($_SERVER['SERVER_NAME'] ?? '');
         if ($applicationVersion = self::getApplicationVersion()) {
-            return '_' . $applicationVersion;
+            return $sitename . '_' . $applicationVersion;
         }
-        return null;
+        return $sitename;
     }
 
     /**
