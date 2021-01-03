@@ -22,6 +22,10 @@ Via Composer
 composer require getpop/root
 ```
 
+## Development
+
+The source code is hosted on the [PoP monorepo](https://github.com/leoloso/PoP), under [`Engine/packages/root`](https://github.com/leoloso/PoP/tree/master/layers/Engine/packages/root).
+
 ## Usage
 
 Initialize the component:
@@ -57,7 +61,7 @@ Requirements:
 Via [Rector](https://github.com/rectorphp/rector) (dry-run mode):
 
 ```bash
-composer downgrade-code
+composer preview-code-downgrade
 ```
 
 ## Standards
@@ -116,5 +120,5 @@ The MIT License (MIT). Please see [License File](LICENSE.md) for more informatio
 [link-scrutinizer]: https://scrutinizer-ci.com/g/getpop/root/code-structure
 [link-code-quality]: https://scrutinizer-ci.com/g/getpop/root
 [link-downloads]: https://packagist.org/packages/getpop/root
-[link-contributors]: ../../contributors
+[link-contributors]: ../../../../../../contributors
 [link-author]: https://github.com/leoloso
