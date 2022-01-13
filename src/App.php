@@ -8,9 +8,13 @@ use LogicException;
 use PoP\Root\Component\ComponentInterface;
 use PoP\Root\Container\ContainerBuilderFactory;
 use PoP\Root\Container\SystemContainerBuilderFactory;
-use PoP\Root\Managers\AppStateManager;
-use PoP\Root\Managers\ComponentManager;
-use PoP\Root\State\MutationResolutionStore;
+use PoP\Root\StateManagers\AppStateManager;
+use PoP\Root\StateManagers\AppStateManagerInterface;
+use PoP\Root\StateManagers\ComponentManager;
+use PoP\Root\StateManagers\ComponentManagerInterface;
+use PoP\Root\StateManagers\HookManager;
+use PoP\Root\StateManagers\HookManagerInterface;
+use PoP\Root\Stores\MutationResolutionStore;
 use Symfony\Component\DependencyInjection\Container;
 
 /**
@@ -18,21 +22,15 @@ use Symfony\Component\DependencyInjection\Container;
  */
 class App implements AppInterface
 {
-    protected static AppLoader $appLoader;
+    protected static AppLoaderInterface $appLoader;
+    protected static HookManagerInterface $hookManager;
     protected static ContainerBuilderFactory $containerBuilderFactory;
     protected static SystemContainerBuilderFactory $systemContainerBuilderFactory;
-    protected static ComponentManager $componentManager;
-    protected static AppStateManager $appStateManager;
+    protected static ComponentManagerInterface $componentManager;
+    protected static AppStateManagerInterface $appStateManager;
     protected static MutationResolutionStore $mutationResolutionStore;
     /** @var string[] */
     protected static array $componentClassesToInitialize = [];
-    /**
-     * Enable services to inject their own state.
-     * Useful for PHPUnit tests.
-     *
-     * @var array<string,mixed>
-     */
-    public static array $runtimeServices = [];
 
     /**
      * This function must be invoked at the very beginning,
@@ -42,14 +40,16 @@ class App implements AppInterface
      * provide the default one.
      */
     public static function initialize(
-        ?AppLoader $appLoader = null,
+        ?AppLoaderInterface $appLoader = null,
+        ?HookManagerInterface $hookManager = null,
         ?ContainerBuilderFactory $containerBuilderFactory = null,
         ?SystemContainerBuilderFactory $systemContainerBuilderFactory = null,
-        ?ComponentManager $componentManager = null,
-        ?AppStateManager $appStateManager = null,
+        ?ComponentManagerInterface $componentManager = null,
+        ?AppStateManagerInterface $appStateManager = null,
         ?MutationResolutionStore $mutationResolutionStore = null,
     ): void {
         self::$appLoader = $appLoader ?? static::createAppLoader();
+        self::$hookManager = $hookManager ?? static::createHookManager();
         self::$containerBuilderFactory = $containerBuilderFactory ?? static::createContainerBuilderFactory();
         self::$systemContainerBuilderFactory = $systemContainerBuilderFactory ?? static::createSystemContainerBuilderFactory();
         self::$componentManager = $componentManager ?? static::createComponentManager();
@@ -59,14 +59,16 @@ class App implements AppInterface
         // Inject the Components slated for initialization
         self::$appLoader->addComponentClassesToInitialize(self::$componentClassesToInitialize);
         self::$componentClassesToInitialize = [];
-
-        // Reset the dynamic services
-        self::$runtimeServices = [];
     }
 
-    protected static function createAppLoader(): AppLoader
+    protected static function createAppLoader(): AppLoaderInterface
     {
         return new AppLoader();
+    }
+
+    protected static function createHookManager(): HookManagerInterface
+    {
+        return new HookManager();
     }
 
     protected static function createContainerBuilderFactory(): ContainerBuilderFactory
@@ -79,12 +81,12 @@ class App implements AppInterface
         return new SystemContainerBuilderFactory();
     }
 
-    protected static function createComponentManager(): ComponentManager
+    protected static function createComponentManager(): ComponentManagerInterface
     {
         return new ComponentManager();
     }
 
-    protected static function createAppStateManager(): AppStateManager
+    protected static function createAppStateManager(): AppStateManagerInterface
     {
         return new AppStateManager();
     }
@@ -94,9 +96,14 @@ class App implements AppInterface
         return new MutationResolutionStore();
     }
 
-    public static function getAppLoader(): AppLoader
+    public static function getAppLoader(): AppLoaderInterface
     {
         return self::$appLoader;
+    }
+
+    public static function getHookManager(): HookManagerInterface
+    {
+        return self::$hookManager;
     }
 
     public static function getContainerBuilderFactory(): ContainerBuilderFactory
@@ -109,12 +116,12 @@ class App implements AppInterface
         return self::$systemContainerBuilderFactory;
     }
 
-    public static function getComponentManager(): ComponentManager
+    public static function getComponentManager(): ComponentManagerInterface
     {
         return self::$componentManager;
     }
 
-    public static function getAppStateManager(): AppStateManager
+    public static function getAppStateManager(): AppStateManagerInterface
     {
         return self::$appStateManager;
     }
@@ -197,5 +204,48 @@ class App implements AppInterface
         /** @var string */
         $key = $keyOrPath;
         return $appStateManager->has($key);
+    }
+
+    /**
+     * Shortcut function.
+     */
+    final public static function addFilter(string $tag, callable $function_to_add, int $priority = 10, int $accepted_args = 1): void
+    {
+        self::getHookManager()->addFilter($tag, $function_to_add, $priority, $accepted_args);
+    }
+    /**
+     * Shortcut function.
+     */
+    final public static function removeFilter(string $tag, callable $function_to_remove, int $priority = 10): bool
+    {
+        return self::getHookManager()->removeFilter($tag, $function_to_remove, $priority);
+    }
+    /**
+     * Shortcut function.
+     */
+    final public static function applyFilters(string $tag, mixed $value, mixed ...$args): mixed
+    {
+        return self::getHookManager()->applyFilters($tag, $value, ...$args);
+    }
+    /**
+     * Shortcut function.
+     */
+    final public static function addAction(string $tag, callable $function_to_add, int $priority = 10, int $accepted_args = 1): void
+    {
+        self::getHookManager()->addAction($tag, $function_to_add, $priority, $accepted_args);
+    }
+    /**
+     * Shortcut function.
+     */
+    final public static function removeAction(string $tag, callable $function_to_remove, int $priority = 10): bool
+    {
+        return self::getHookManager()->removeAction($tag, $function_to_remove, $priority);
+    }
+    /**
+     * Shortcut function.
+     */
+    final public static function doAction(string $tag, mixed ...$args): void
+    {
+        self::getHookManager()->doAction($tag, ...$args);
     }
 }
