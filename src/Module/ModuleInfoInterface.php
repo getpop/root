@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace PoP\Root\Component;
+namespace PoP\Root\Module;
 
-interface ComponentInfoInterface
+interface ModuleInfoInterface
 {
     public function get(string $key): mixed;
 }

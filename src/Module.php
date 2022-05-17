@@ -4,23 +4,18 @@ declare(strict_types=1);
 
 namespace PoP\Root;
 
-use PoP\Root\Component\AbstractComponent;
-use PoP\Root\Component\ApplicationEvents;
+use PoP\Root\Module\AbstractModule;
+use PoP\Root\Module\ApplicationEvents;
 use PoP\Root\Container\HybridCompilerPasses\AutomaticallyInstantiatedServiceCompilerPass;
 use PoP\Root\Container\ServiceInstantiatorInterface;
 use PoP\Root\Container\SystemCompilerPasses\RegisterSystemCompilerPassServiceCompilerPass;
 
-/**
- * Initialize component
- */
-class Component extends AbstractComponent
+class Module extends AbstractModule
 {
     /**
-     * Classes from PoP components that must be initialized before this component
-     *
      * @return string[]
      */
-    public function getDependedComponentClasses(): array
+    public function getDependedModuleClasses(): array
     {
         return [];
     }
@@ -51,11 +46,11 @@ class Component extends AbstractComponent
     /**
      * Initialize services
      *
-     * @param string[] $skipSchemaComponentClasses
+     * @param string[] $skipSchemaModuleClasses
      */
     protected function initializeContainerServices(
         bool $skipSchema,
-        array $skipSchemaComponentClasses,
+        array $skipSchemaModuleClasses,
     ): void {
         $this->initServices(dirname(__DIR__), '', 'hybrid-services.yaml');
         $this->initServices(dirname(__DIR__));
@@ -77,14 +72,14 @@ class Component extends AbstractComponent
     /**
      * Function called by the Bootloader after all components have been loaded
      */
-    public function componentLoaded(): void
+    public function moduleLoaded(): void
     {
         // Initialize container services through AutomaticallyInstantiatedServiceCompilerPass
         /**
          * @var ServiceInstantiatorInterface
          */
         $serviceInstantiator = App::getContainer()->get(ServiceInstantiatorInterface::class);
-        $serviceInstantiator->initializeServices(ApplicationEvents::COMPONENT_LOADED);
+        $serviceInstantiator->initializeServices(ApplicationEvents::MODULE_LOADED);
     }
 
     /**

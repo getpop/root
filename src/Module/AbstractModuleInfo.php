@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace PoP\Root\Component;
+namespace PoP\Root\Module;
 
-abstract class AbstractComponentInfo implements ComponentInfoInterface
+abstract class AbstractModuleInfo implements ModuleInfoInterface
 {
     protected array $values = [];
 
     final public function __construct(
-        protected ComponentInterface $component
+        protected ModuleInterface $module
     ) {
         $this->initialize();
     }

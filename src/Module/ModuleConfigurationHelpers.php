@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace PoP\Root\Component;
+namespace PoP\Root\Module;
 
 /**
- * Helpers for the ComponentConfiguration class
+ * Helpers for the ModuleConfiguration class
  */
-class ComponentConfigurationHelpers
+class ModuleConfigurationHelpers
 {
     public static function getHookName(string $class, string $envVariable): string
     {

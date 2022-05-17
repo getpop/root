@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PoP\Root\Component;
+namespace PoP\Root\Module;
 
 use PoP\Root\App;
 use PoP\Root\Container\Loader\ForceAutoconfigureYamlFileLoader;
@@ -10,23 +10,23 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
-trait InitializeContainerServicesInComponentTrait
+trait InitializeContainerServicesInModuleTrait
 {
     /**
      * Initialize the services defined in the YAML configuration file.
      * If not provided, use "services.yaml"
      */
     public function initServices(
-        string $componentDir,
+        string $moduleDir,
         string $configPath = '',
         string $fileName = 'services.yaml'
     ): void {
         // First check if the container has been cached. If so, do nothing
         if (!App::getContainerBuilderFactory()->isCached()) {
-            // Initialize the ContainerBuilder with this component's service implementations
+            // Initialize the ContainerBuilder with this module's service implementations
             /** @var ContainerBuilder */
             $containerBuilder = App::getContainer();
-            $this->loadServicesFromYAMLConfigIntoContainer($containerBuilder, $componentDir, $configPath, $fileName);
+            $this->loadServicesFromYAMLConfigIntoContainer($containerBuilder, $moduleDir, $configPath, $fileName);
         }
     }
 
@@ -36,12 +36,12 @@ trait InitializeContainerServicesInComponentTrait
      */
     protected function loadServicesFromYAMLConfigIntoContainer(
         ContainerBuilder $containerBuilder,
-        string $componentDir,
+        string $moduleDir,
         string $configPath,
         string $fileName
     ): void {
-        $componentPath = $this->getComponentPath($componentDir, $configPath);
-        $loader = new YamlFileLoader($containerBuilder, new FileLocator($componentPath));
+        $modulePath = $this->getModulePath($moduleDir, $configPath);
+        $loader = new YamlFileLoader($containerBuilder, new FileLocator($modulePath));
         $loader->load($fileName);
     }
 
@@ -49,11 +49,11 @@ trait InitializeContainerServicesInComponentTrait
      * Initialize the services defined in the YAML configuration file.
      * If not provided, use "services.yaml"
      */
-    protected function getComponentPath(
-        string $componentDir,
+    protected function getModulePath(
+        string $moduleDir,
         string $configPath = ''
     ): string {
-        return $componentDir . '/config' . ($configPath ? '/' . trim($configPath, '/') : '');
+        return $moduleDir . '/config' . ($configPath ? '/' . trim($configPath, '/') : '');
     }
 
     /**
@@ -62,7 +62,7 @@ trait InitializeContainerServicesInComponentTrait
      * If file name provided, use "schema-services.yaml"
      */
     public function initSchemaServices(
-        string $componentDir,
+        string $moduleDir,
         bool $skipSchema,
         string $configPath = '',
         string $fileName = 'schema-services.yaml'
@@ -70,11 +70,11 @@ trait InitializeContainerServicesInComponentTrait
         if (!App::getContainerBuilderFactory()->isCached()) {
             /** @var ContainerBuilder */
             $containerBuilder = App::getContainer();
-            $componentPath = $this->getComponentPath($componentDir, $configPath);
+            $modulePath = $this->getModulePath($moduleDir, $configPath);
             $autoconfigure = !$skipSchema;
             $loader = new ForceAutoconfigureYamlFileLoader(
                 $containerBuilder,
-                new FileLocator($componentPath),
+                new FileLocator($modulePath),
                 $autoconfigure
             );
             $loader->load($fileName);
@@ -85,16 +85,16 @@ trait InitializeContainerServicesInComponentTrait
      * Load services into the System Container
      */
     public function initSystemServices(
-        string $componentDir,
+        string $moduleDir,
         string $configPath = '',
         string $fileName = 'system-services.yaml'
     ): void {
         // First check if the container has been cached. If so, do nothing
         if (!App::getSystemContainerBuilderFactory()->isCached()) {
-            // Initialize the ContainerBuilder with this component's service implementations
+            // Initialize the ContainerBuilder with this module's service implementations
             /** @var ContainerBuilder */
             $containerBuilder = App::getSystemContainer();
-            $this->loadServicesFromYAMLConfigIntoContainer($containerBuilder, $componentDir, $configPath, $fileName);
+            $this->loadServicesFromYAMLConfigIntoContainer($containerBuilder, $moduleDir, $configPath, $fileName);
         }
     }
 }
