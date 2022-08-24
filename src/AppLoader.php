@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace PoP\Root;
 
-use PoP\Root\Module\ModuleInterface;
 use PoP\Root\Constants\HookNames;
 use PoP\Root\Dotenv\DotenvBuilderFactory;
 use PoP\Root\Facades\SystemCompilerPassRegistryFacade;
+use PoP\Root\Module\ModuleInterface;
+use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 
 /**
  * Application Loader
@@ -35,7 +36,7 @@ class AppLoader implements AppLoaderInterface
     /**
      * [key]: Module class, [value]: Configuration
      *
-     * @var array<string, array<string, mixed>>
+     * @var array<string,array<string,mixed>>
      */
     protected array $moduleClassConfiguration = [];
     /**
@@ -74,7 +75,7 @@ class AppLoader implements AppLoaderInterface
     /**
      * Add configuration for the Module classes
      *
-     * @param array<string, array<string, mixed>> $moduleClassConfiguration [key]: Module class, [value]: Configuration
+     * @param array<string,array<string,mixed>> $moduleClassConfiguration [key]: Module class, [value]: Configuration
      */
     public function addModuleClassConfiguration(
         array $moduleClassConfiguration
@@ -115,7 +116,7 @@ class AppLoader implements AppLoaderInterface
     /**
      * Add schema Module classes to skip initializing
      *
-     * @param string[] $skipSchemaModuleClasses List of `Module` class which must not initialize their Schema services
+     * @param array<class-string<ModuleInterface>> $skipSchemaModuleClasses List of `Module` class which must not initialize their Schema services
      */
     public function addSchemaModuleClassesToSkip(
         array $skipSchemaModuleClasses
@@ -291,7 +292,7 @@ class AppLoader implements AppLoaderInterface
     }
 
     /**
-     * @return string[]
+     * @return array<class-string<CompilerPassInterface>>
      */
     final protected function getSystemContainerCompilerPasses(): array
     {
@@ -307,6 +308,7 @@ class AppLoader implements AppLoaderInterface
                 ...$module->getSystemContainerCompilerPassClasses()
             ];
         }
+        /** @var array<class-string<CompilerPassInterface>> */
         return array_values(array_unique($compilerPassClasses));
     }
 
@@ -358,10 +360,12 @@ class AppLoader implements AppLoaderInterface
             }
             $moduleConfiguration = $this->moduleClassConfiguration[$moduleClass] ?? [];
             $skipSchemaForModule = $this->skipSchemaForModule($module);
+            /** @var array<class-string<ModuleInterface>> */
+            $skipSchemaModuleClasses = $this->skipSchemaModuleClasses;
             $module->initialize(
                 $moduleConfiguration,
                 $skipSchemaForModule,
-                $this->skipSchemaModuleClasses
+                $skipSchemaModuleClasses
             );
         }
 

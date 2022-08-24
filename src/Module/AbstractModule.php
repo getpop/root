@@ -28,7 +28,7 @@ abstract class AbstractModule implements ModuleInterface
      * Enable each module to set default configuration for
      * itself and its depended components
      *
-     * @param array<string, mixed> $moduleClassConfiguration
+     * @param array<string,mixed> $moduleClassConfiguration
      */
     public function customizeModuleClassConfiguration(
         array &$moduleClassConfiguration
@@ -38,9 +38,9 @@ abstract class AbstractModule implements ModuleInterface
     /**
      * Initialize the module
      *
-     * @param array<string, mixed> $configuration
+     * @param array<string,mixed> $configuration
      * @param boolean $skipSchema Indicate if to skip initializing the schema
-     * @param string[] $skipSchemaModuleClasses
+     * @param array<class-string<ModuleInterface>> $skipSchemaModuleClasses
      */
     final public function initialize(
         array $configuration,
@@ -157,7 +157,7 @@ abstract class AbstractModule implements ModuleInterface
     /**
      * Initialize services
      *
-     * @param string[] $skipSchemaModuleClasses
+     * @param array<class-string<ModuleInterface>> $skipSchemaModuleClasses
      */
     protected function initializeContainerServices(
         bool $skipSchema,
@@ -167,6 +167,7 @@ abstract class AbstractModule implements ModuleInterface
 
     /**
      * Define runtime constants
+     * @param array<class-string<ModuleInterface>> $skipSchemaModuleClasses
      */
     protected function defineRuntimeConstants(
         bool $skipSchema,
@@ -310,6 +311,8 @@ abstract class AbstractModule implements ModuleInterface
 
     /**
      * ModuleConfiguration class for the Module
+     *
+     * @return class-string<ModuleConfigurationInterface>|null
      */
     protected function getModuleConfigurationClass(): ?string
     {
@@ -318,6 +321,7 @@ abstract class AbstractModule implements ModuleInterface
         if (!class_exists($moduleConfigurationClass)) {
             return null;
         }
+        /** @var class-string<ModuleConfigurationInterface> */
         return $moduleConfigurationClass;
     }
 
@@ -332,6 +336,8 @@ abstract class AbstractModule implements ModuleInterface
 
     /**
      * ModuleInfo class for the Module
+     *
+     * @return class-string<ModuleInfoInterface>|null
      */
     protected function getModuleInfoClass(): ?string
     {
@@ -340,6 +346,7 @@ abstract class AbstractModule implements ModuleInterface
         if (!class_exists($moduleInfoClass)) {
             return null;
         }
+        /** @var class-string<ModuleInfoInterface> */
         return $moduleInfoClass;
     }
 }

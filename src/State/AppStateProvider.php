@@ -20,9 +20,13 @@ class AppStateProvider extends AbstractAppStateProvider
     }
     final protected function getRoutingManager(): RoutingManagerInterface
     {
+        /** @var RoutingManagerInterface */
         return $this->routingManager ??= $this->instanceManager->getInstance(RoutingManagerInterface::class);
     }
 
+    /**
+     * @param array<string,mixed> $state
+     */
     public function initialize(array &$state): void
     {
         /** @var ModuleConfiguration */
@@ -38,6 +42,9 @@ class AppStateProvider extends AbstractAppStateProvider
         $state['routing'] = [];
     }
 
+    /**
+     * @param array<string,mixed> $state
+     */
     public function augment(array &$state): void
     {
         $nature = $state['nature'];
