@@ -21,7 +21,6 @@
         "symfony/dotenv": "^6.0",
         "symfony/http-foundation": "^6.0",
         "symfony/polyfill-php74": "^1.24",
-        "symfony/polyfill-php80": "^1.24",
         "symfony/yaml": "^6.0"
     },
     "require-dev": {
